@@ -7,7 +7,7 @@ import passportLocal from 'passport-local';
 import bcrypt from 'bcryptjs';
 import { PrismaClient } from '@prisma/client';
 
-config({ path: ['.env.dev'], envKeysFile: './.env.keys' });
+config({ path: ['.env.dev'] });
 
 const prisma = new PrismaClient();
 
