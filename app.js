@@ -6,7 +6,14 @@ const PORT = process.env.PORT || 3000;
 app.use('/', indexRouter);
 
 app.use((req, res) => {
-  res.render('notFound', { title: 'Not Found', errMsg: 'Page Not Found' });
+  res
+    .status(404)
+    .render('notFound', { title: 'Not Found', errMsg: 'Page Not Found' });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).render('error', { errorMsg: err.message });
 });
 
 app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
