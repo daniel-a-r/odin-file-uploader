@@ -25,6 +25,7 @@ model User {
   username String   @unique
   password String
   folders  Folder[]
+  files    File[]
 }
 
 model Folder {
@@ -34,10 +35,10 @@ model Folder {
   files File[]
 
   folders    Folder[] @relation("FolderRootFolder")
-  rootFolder Folder   @relation("FolderRootFolder", fields: [folderId], references: [id])
-  folderId   String
+  rootFolder Folder?  @relation("FolderRootFolder", fields: [folderId], references: [id])
+  folderId   String?
 
-  User   User   @relation(fields: [userId], references: [id])
+  owner  User   @relation(fields: [userId], references: [id])
   userId String
 }
 
@@ -45,8 +46,11 @@ model File {
   id   String @id @default(uuid())
   name String
 
-  Folder   Folder @relation(fields: [folderId], references: [id])
+  folder   Folder @relation(fields: [folderId], references: [id])
   folderId String
+
+  owner  User   @relation(fields: [userId], references: [id])
+  userId String
 }
 
 enum FolderRole {
