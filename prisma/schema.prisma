@@ -21,17 +21,20 @@ model Session {
 }
 
 model User {
-  id       String   @id @default(uuid())
-  username String   @unique
+  id       String @id @default(uuid())
+  username String @unique
   password String
-  folders  Folder[]
-  files    File[]
+
+  folders Folder[]
+  files   File[]
 }
 
 model Folder {
-  id    String     @id @default(uuid())
-  role  FolderRole @default(REGULAR)
-  name  String
+  id        String     @id @default(uuid())
+  role      FolderRole @default(REGULAR)
+  name      String
+  createdAt DateTime   @default(now())
+
   files File[]
 
   folders  Folder[] @relation("FolderParentFolder")
@@ -43,8 +46,9 @@ model Folder {
 }
 
 model File {
-  id   String @id @default(uuid())
-  name String
+  id         String   @id @default(uuid())
+  name       String
+  uploadedAt DateTime @default(now())
 
   parent   Folder @relation(fields: [parentId], references: [id])
   parentId String
