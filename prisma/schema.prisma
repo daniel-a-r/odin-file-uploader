@@ -28,21 +28,23 @@ model User {
 }
 
 model Folder {
-  id         String     @id @default(uuid())
-  role       FolderRole @default(REGULAR)
-  name       String
-  files      File[]
-  folders    Folder[]   @relation("FolderRootFolder")
+  id    String     @id @default(uuid())
+  role  FolderRole @default(REGULAR)
+  name  String
+  files File[]
+
+  folders    Folder[] @relation("FolderRootFolder")
+  rootFolder Folder   @relation("FolderRootFolder", fields: [folderId], references: [id])
   folderId   String
-  rootFolder Folder     @relation("FolderRootFolder", fields: [folderId], references: [id])
 
   User   User   @relation(fields: [userId], references: [id])
   userId String
 }
 
 model File {
-  id       String @id @default(uuid())
-  name     String
+  id   String @id @default(uuid())
+  name String
+
   Folder   Folder @relation(fields: [folderId], references: [id])
   folderId String
 }
