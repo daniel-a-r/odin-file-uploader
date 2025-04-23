@@ -17,7 +17,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "npx prettier . --write",
-    "migrate": "npx dotenvx run -f .env.dev -- npx prisma migrate dev --name"
+    "migrate": "npx dotenvx run -f .env.dev -- npx prisma migrate dev --name",
+    "encrypt": "npx dotenvx encrypt -f .env.dev",
+    "decrypt": "npx dotenvx decrypt -f .env.dev"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.41.0",
