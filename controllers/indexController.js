@@ -1,5 +1,6 @@
 import { ExpressValidator, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
+import crypto from 'node:crypto';
 import prisma from '../config/prismaClient.js';
 import { authenticate } from '../config/passport.config.js';
 
@@ -56,10 +57,19 @@ const createUser = async (req, res, next) => {
   const { username, password } = req.body;
   try {
     const hashPassword = await bcrypt.hash(password, 10);
+    const rootId = crypto.randomUUID();
     await prisma.user.create({
       data: {
         username,
         password: hashPassword,
+        folders: {
+          create: {
+            id: rootId,
+            name: 'root',
+            role: 'ROOT',
+            parentId: rootId,
+          },
+        },
       },
     });
     next();

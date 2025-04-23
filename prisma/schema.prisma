@@ -34,23 +34,23 @@ model Folder {
   name  String
   files File[]
 
-  folders    Folder[] @relation("FolderRootFolder")
-  rootFolder Folder?  @relation("FolderRootFolder", fields: [folderId], references: [id])
-  folderId   String?
+  folders  Folder[] @relation("FolderParentFolder")
+  parent   Folder   @relation("FolderParentFolder", fields: [parentId], references: [id])
+  parentId String
 
-  owner  User   @relation(fields: [userId], references: [id])
-  userId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String
 }
 
 model File {
   id   String @id @default(uuid())
   name String
 
-  folder   Folder @relation(fields: [folderId], references: [id])
-  folderId String
+  parent   Folder @relation(fields: [parentId], references: [id])
+  parentId String
 
-  owner  User   @relation(fields: [userId], references: [id])
-  userId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String
 }
 
 enum FolderRole {
