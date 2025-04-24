@@ -30,7 +30,7 @@ passport.use(
 );
 
 const authenticate = passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/dashboard',
   failureRedirect: '/login',
   failureMessage: true,
 });

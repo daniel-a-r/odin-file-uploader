@@ -1,6 +1,5 @@
 import { ExpressValidator, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
-import crypto from 'node:crypto';
 import prisma from '../config/prismaClient.js';
 import { authenticate } from '../config/passport.config.js';
 
@@ -57,17 +56,14 @@ const createUser = async (req, res, next) => {
   const { username, password } = req.body;
   try {
     const hashPassword = await bcrypt.hash(password, 10);
-    const rootId = crypto.randomUUID();
     await prisma.user.create({
       data: {
         username,
         password: hashPassword,
         folders: {
           create: {
-            id: rootId,
             name: 'root',
             role: 'ROOT',
-            parentId: rootId,
           },
         },
       },
@@ -131,6 +127,48 @@ const logoutGet = (req, res, next) => {
   });
 };
 
+const dashboardGet = async (req, res) => {
+  const root = await prisma.folder.findFirst({
+    where: {
+      ownerId: req.user.id,
+      role: 'ROOT',
+    },
+  });
+  res.redirect(`/dashboard/${root.id}`);
+  // res.render('dashboard', { title: 'Dashboard', script: 'dashboard.js' });
+};
+
+const dashboardCurrentFolderIdGet = async (req, res) => {
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: req.params.currentFolderId,
+    },
+    include: {
+      folders: true,
+    },
+  });
+  console.log(folder);
+  // console.log(req.params);
+  res.render('dashboard', {
+    title: 'Dashboard',
+    script: 'dashboard.js',
+    currentFolderId: folder.id,
+  });
+};
+
+const newFolderPost = async (req, res) => {
+  console.log(req.body);
+  console.log(req.params);
+  const newFolder = await prisma.folder.create({
+    data: {
+      name: req.body.newFolderName,
+      ownerId: req.user.id,
+      parentId: req.params.currentFolderId,
+    },
+  });
+  res.redirect('/dashboard');
+};
+
 export default {
   indexGet,
   signUpGet,
@@ -138,4 +176,7 @@ export default {
   loginGet,
   loginPost,
   logoutGet,
+  dashboardGet,
+  dashboardCurrentFolderIdGet,
+  newFolderPost,
 };
