@@ -1,9 +1,9 @@
 const folderRoleElem = document.querySelector('[data-folder-role]');
 const folderRole = folderRoleElem.dataset.folderRole;
 
-const newFolderModal = document.querySelector('dialog.new-folder');
+const newFolderModal = document.querySelector('dialog.folder-create');
 const newFolderModalOpenButtons = document.querySelectorAll(
-  'button.new-folder-open',
+  'button.folder-create-open',
 );
 newFolderModalOpenButtons.forEach((button) => {
   button.addEventListener('click', () => {
@@ -11,7 +11,7 @@ newFolderModalOpenButtons.forEach((button) => {
   });
 });
 
-const newFolderClose = document.querySelector('button.new-folder-close');
+const newFolderClose = document.querySelector('button.folder-create-close');
 newFolderClose.addEventListener('click', () => {
   newFolderModal.close();
 });

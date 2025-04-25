@@ -4,7 +4,7 @@
   <body>
     <%- include('./partials/nav') %>
     <h1><%= locals.title %></h1>
-    <button class="new-folder-open">New Folder</button>
+    <button class="folder-create-open">New Folder</button>
     <button class="file-upload-open">File Upload</button>
     <% if (locals.folder.role === 'ROOT') { %>
       <div data-folder-role="<%= locals.folder.role %>">
@@ -20,8 +20,8 @@
             <%= locals.folder.name %>
           </button>
           <div class="folder-actions">
-            <button class="new-folder-open">New Folder</button>
-            <button class="file-upload">File Upload</button>
+            <button class="folder-create-open">New Folder</button>
+            <button class="file-upload-open">File Upload</button>
             <button class="folder-rename-open">Rename</button>
             <button class="folder-delete-open">Delete</button>
           </div>
@@ -34,16 +34,16 @@
       <% }) %>
     </ul>
     
-    <dialog class="new-folder">
+    <dialog class="folder-create">
       <h1>New Folder</h1>
       <form
         action="/dashboard/<%= locals.folder.id %>/folder-create"
         method="post"
       >
-        <label for="new-folder-name">Name:</label>
-        <input type="text" name="newFolderName" id="new-folder-name" required />
-        <button type="reset" class="new-folder-close">Cancel</button>
-        <button type="submit" class="new-folder-submit">Create Folder</button>
+        <label for="folder-create-name">Name:</label>
+        <input type="text" name="newFolderName" id="folder-create-name" required />
+        <button type="reset" class="folder-create-close">Cancel</button>
+        <button type="submit" class="folder-create-submit">Create Folder</button>
       </form>
     </dialog>
 
