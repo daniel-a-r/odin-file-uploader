@@ -5,9 +5,15 @@
     <%- include('./partials/nav') %>
     <h1><%= locals.title %></h1>
     <button class="new-folder-open">New Folder</button>
+    <h2><%= locals.folder.name %></h2>
+    <ul>
+      <% locals.folders.forEach(folder => { %>
+        <li><a href="/dashboard/<%= folder.id %>"><%= folder.name %></a></li>
+      <% }) %>
+    </ul>
     <dialog class="new-folder-dialog">
       <form
-        action="/dashboard/<%= locals.currentFolderId %>/new-folder"
+        action="/dashboard/<%= locals.folder.id %>/new-folder"
         method="post"
       >
         <label for="new-folder-name">Name:</label>

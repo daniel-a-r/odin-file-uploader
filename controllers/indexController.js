@@ -128,32 +128,30 @@ const logoutGet = (req, res, next) => {
 };
 
 const dashboardGet = async (req, res) => {
-  const root = await prisma.folder.findFirst({
-    where: {
-      ownerId: req.user.id,
-      role: 'ROOT',
-    },
-  });
-  res.redirect(`/dashboard/${root.id}`);
-  // res.render('dashboard', { title: 'Dashboard', script: 'dashboard.js' });
+  res.redirect(`/dashboard/${req.user.root.id}`);
 };
 
 const dashboardCurrentFolderIdGet = async (req, res) => {
-  const folder = await prisma.folder.findUnique({
-    where: {
-      id: req.params.currentFolderId,
-    },
-    include: {
-      folders: true,
-    },
-  });
-  console.log(folder);
-  // console.log(req.params);
-  res.render('dashboard', {
-    title: 'Dashboard',
-    script: 'dashboard.js',
-    currentFolderId: folder.id,
-  });
+  try {
+    const folder = await prisma.folder.findUnique({
+      where: {
+        id: req.params.currentFolderId,
+        ownerId: req.user.id,
+      },
+      include: {
+        folders: true,
+        files: true,
+      },
+    });
+    res.render('dashboard', {
+      title: 'Dashboard',
+      script: 'dashboard.js',
+      folder: folder,
+      folders: folder.folders,
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const newFolderPost = async (req, res) => {

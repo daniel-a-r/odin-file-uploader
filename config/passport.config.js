@@ -45,7 +45,18 @@ passport.deserializeUser(async (id, done) => {
       where: {
         id,
       },
+      include: {
+        folders: {
+          where: {
+            role: 'ROOT',
+          },
+        },
+      },
     });
+
+    Object.assign(user, { root: user.folders[0] });
+    delete user.folders;
+
     done(null, user);
   } catch (err) {
     done(err);
