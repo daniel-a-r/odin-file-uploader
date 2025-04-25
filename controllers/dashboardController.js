@@ -68,15 +68,25 @@ const folderCreatePost = async (req, res) => {
 };
 
 const folderRenamePost = async (req, res) => {
-  await prisma.folder.update({
-    where: {
-      id: req.params.currentFolderId,
-    },
-    data: {
-      name: req.body.folderRename,
-    },
-  });
-  res.redirect(`/dashboard/${req.params.currentFolderId}`);
+  // cannot rename root folder
+  if (req.params.currentFolderId === req.user.root.id) {
+    res.redirect(`/dashboard/${req.user.root.id}`);
+    return;
+  }
+
+  try {
+    await prisma.folder.update({
+      where: {
+        id: req.params.currentFolderId,
+      },
+      data: {
+        name: req.body.folderRename,
+      },
+    });
+    res.redirect(`/dashboard/${req.params.currentFolderId}`);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const folderDeletePost = async (req, res) => {
