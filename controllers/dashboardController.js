@@ -12,7 +12,11 @@ const dashboardCurrentFolderIdGet = async (req, res) => {
         ownerId: req.user.id,
       },
       include: {
-        folders: true,
+        folders: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
         files: true,
       },
     });
