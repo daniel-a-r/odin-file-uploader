@@ -18,15 +18,4 @@ indexRouter
 
 indexRouter.get('/logout', controller.logoutGet);
 
-indexRouter.get('/dashboard', controller.dashboardGet);
-indexRouter.get(
-  '/dashboard/:currentFolderId',
-  controller.dashboardCurrentFolderIdGet,
-);
-
-indexRouter.post(
-  '/dashboard/:currentFolderId/new-folder',
-  controller.newFolderPost,
-);
-
 export default indexRouter;

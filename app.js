@@ -1,9 +1,11 @@
-import indexRouter from './routes/indexRouter.js';
 import app from './config/app.config.js';
+import indexRouter from './routes/indexRouter.js';
+import dashboardRouter from './routes/dashboardRouter.js';
 
 const PORT = process.env.PORT || 3000;
 
 app.use('/', indexRouter);
+app.use('/dashboard', dashboardRouter);
 
 app.use((req, res) => {
   res
