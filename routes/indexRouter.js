@@ -1,21 +1,22 @@
 import { Router } from 'express';
 import controller from '../controllers/indexController.js';
 
-const indexRouter = new Router();
+const router = new Router();
 
-indexRouter.get('/', controller.indexGet);
+router.get('/', controller.indexGet);
 
-indexRouter
+// prettier-ignore
+router
   .route('/sign-up')
   .get(controller.signUpGet)
   .post(controller.signUpPost);
 
 // prettier-ignore
-indexRouter
+router
   .route('/login')
   .get(controller.loginGet)
   .post(controller.loginPost);
 
-indexRouter.get('/logout', controller.logoutGet);
+router.get('/logout', controller.logoutGet);
 
-export default indexRouter;
+export default router;
