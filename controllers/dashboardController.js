@@ -55,20 +55,31 @@ const dashboardCurrentFolderIdGet = async (req, res) => {
 };
 
 const newFolderPost = async (req, res) => {
-  console.log(req.body);
-  console.log(req.params);
-  const newFolder = await prisma.folder.create({
+  await prisma.folder.create({
     data: {
       name: req.body.newFolderName,
       ownerId: req.user.id,
       parentId: req.params.currentFolderId,
     },
   });
-  res.redirect(`/dashboard/${newFolder.id}`);
+  res.redirect(`/dashboard/${req.params.currentFolderId}`);
+};
+
+const renamePost = async (req, res) => {
+  await prisma.folder.update({
+    where: {
+      id: req.params.currentFolderId,
+    },
+    data: {
+      name: req.body.folderRename,
+    },
+  });
+  res.redirect(`/dashboard/${req.params.currentFolderId}`);
 };
 
 export default {
   dashboardGet,
   dashboardCurrentFolderIdGet,
   newFolderPost,
+  renamePost,
 };

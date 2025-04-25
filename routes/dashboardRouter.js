@@ -7,5 +7,6 @@ router.get('/', controller.dashboardGet);
 router.get('/:currentFolderId', controller.dashboardCurrentFolderIdGet);
 
 router.post('/:currentFolderId/new-folder', controller.newFolderPost);
+router.post('/:currentFolderId/folder-rename', controller.renamePost);
 
 export default router;

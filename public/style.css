@@ -2,3 +2,15 @@
   font-family: 'Inter', 'Roboto', sans-serif;
   box-sizing: border-box;
 }
+
+button, input {
+  font-size: 1rem;
+}
+
+div.dropdown {
+  display: inline;
+}
+
+div.folder-actions {
+  display: none;
+}

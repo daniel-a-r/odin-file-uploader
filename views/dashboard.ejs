@@ -5,11 +5,21 @@
     <%- include('./partials/nav') %>
     <h1><%= locals.title %></h1>
     <button class="new-folder-open">New Folder</button>
+    <button class="file-upload-open">File Upload</button>
     <nav>
       <% locals.parentFolders.forEach(parentFolder => { %>
         <span><a href="/dashboard/<%= parentFolder.id %>"><%= parentFolder.name %></a> / </span>
       <% }) %>
-      <span><%= locals.folder.name %></span>
+      <div class="dropdown">
+        <button class="folder-actions-toggle"><%= locals.folder.name %></button>
+        <div class="folder-actions">
+          <button class="new-folder-open">New Folder</button>
+          <button>File Upload</button>
+          <button class="folder-rename-open">Rename</button>
+          <button class="folder-delete">Delete</button>
+        </div>
+      </div>
+      
     </nav>
     <ul>
       <% locals.folders.forEach(folder => { %>
@@ -17,7 +27,8 @@
       <% }) %>
     </ul>
     
-    <dialog class="new-folder-dialog">
+    <dialog class="new-folder">
+      <h1>New Folder</h1>
       <form
         action="/dashboard/<%= locals.folder.id %>/new-folder"
         method="post"
@@ -26,6 +37,16 @@
         <input type="text" name="newFolderName" id="new-folder-name" required />
         <button type="reset" class="new-folder-close">Close</button>
         <button type="submit" class="new-folder-submit">Create Folder</button>
+      </form>
+    </dialog>
+
+    <dialog class="folder-rename">
+      <h1>Rename</h1>
+      <form action="/dashboard/<%= locals.folder.id %>/folder-rename" method="post">
+        <label for="folder-rename">Name:</label>
+        <input type="text" name="folderRename" id="folder-rename" required />
+        <button type="reset" class="folder-rename-close">Close</button>
+        <button type="submit" class="folder-rename-submit">Rename Folder</button>
       </form>
     </dialog>
   </body>
