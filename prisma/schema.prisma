@@ -48,6 +48,8 @@ model Folder {
 model File {
   id         String   @id @default(uuid())
   name       String
+  path       String
+  uploadTime Int
   uploadedAt DateTime @default(now())
 
   parent   Folder @relation(fields: [parentId], references: [id])
