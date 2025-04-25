@@ -16,11 +16,38 @@ const dashboardCurrentFolderIdGet = async (req, res) => {
         files: true,
       },
     });
+
+    const parentFolders = [];
+
+    if (req.user.root.id !== folder.id) {
+      let parentId = folder.parentId;
+      const folders = [];
+      for (let i = 0; i < 3; i++) {
+        const parentFolder = await prisma.folder.findUnique({
+          where: {
+            id: parentId,
+          },
+        });
+        if (parentFolder.id === req.user.root.id) break;
+        folders.push(parentFolder);
+        parentId = parentFolder.parentId;
+      }
+      folders.reverse();
+      parentFolders.push(req.user.root, ...folders);
+    }
+
+    if (parentFolders.length === 4) {
+      parentFolders[1].name = '...';
+    }
+
+    console.log(parentFolders);
+
     res.render('dashboard', {
       title: 'Dashboard',
       script: 'dashboard.js',
       folder: folder,
       folders: folder.folders,
+      parentFolders,
     });
   } catch (error) {
     console.error(error);
