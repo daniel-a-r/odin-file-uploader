@@ -10,6 +10,9 @@ const folderActions = document.querySelector('div.folder-actions');
 const folderRenameModal = document.querySelector('dialog.folder-rename');
 const folderRenameOpen = document.querySelector('button.folder-rename-open');
 const folderRenameClose = document.querySelector('button.folder-rename-close');
+const folderDeleteOpen = document.querySelector('button.folder-delete-open');
+const folderDeleteModal = document.querySelector('dialog.folder-delete');
+const folderDeleteClose = document.querySelector('button.folder-delete-close');
 
 newFolderModalOpenButtons.forEach((button) => {
   button.addEventListener('click', () => {
@@ -45,4 +48,12 @@ folderRenameOpen.addEventListener('click', () => {
 
 folderRenameClose.addEventListener('click', () => {
   folderRenameModal.close();
+});
+
+folderDeleteOpen.addEventListener('click', () => {
+  folderDeleteModal.showModal();
+});
+
+folderDeleteClose.addEventListener('click', () => {
+  folderDeleteModal.close();
 });
