@@ -41,7 +41,7 @@ model Folder {
   parent   Folder?  @relation("FolderParentFolder", fields: [parentId], references: [id])
   parentId String?
 
-  owner   User   @relation(fields: [ownerId], references: [id])
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId String
 }
 
