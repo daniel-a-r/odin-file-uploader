@@ -54,7 +54,7 @@ const dashboardCurrentFolderIdGet = async (req, res) => {
   }
 };
 
-const newFolderPost = async (req, res) => {
+const folderCreatePost = async (req, res) => {
   await prisma.folder.create({
     data: {
       name: req.body.newFolderName,
@@ -65,7 +65,7 @@ const newFolderPost = async (req, res) => {
   res.redirect(`/dashboard/${req.params.currentFolderId}`);
 };
 
-const renamePost = async (req, res) => {
+const folderRenamePost = async (req, res) => {
   await prisma.folder.update({
     where: {
       id: req.params.currentFolderId,
@@ -80,6 +80,6 @@ const renamePost = async (req, res) => {
 export default {
   dashboardGet,
   dashboardCurrentFolderIdGet,
-  newFolderPost,
-  renamePost,
+  folderCreatePost,
+  folderRenamePost,
 };
