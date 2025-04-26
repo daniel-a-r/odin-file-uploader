@@ -5,9 +5,9 @@ const dashboardGet = async (req, res) => {
   res.redirect(`/dashboard/${req.user.root.id}`);
 };
 
-const dashboardCurrentFolderIdGet = async (req, res) => {
+const dashboardCurrentFolderIdGet = async (req, res, next) => {
   try {
-    const folder = await prisma.folder.findUnique({
+    const folder = await prisma.folder.findUniqueOrThrow({
       where: {
         id: req.params.currentFolderId,
         ownerId: req.user.id,
@@ -61,6 +61,7 @@ const dashboardCurrentFolderIdGet = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    next();
   }
 };
 
