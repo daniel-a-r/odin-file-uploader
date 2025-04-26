@@ -18,7 +18,11 @@ const dashboardCurrentFolderIdGet = async (req, res) => {
             createdAt: 'asc',
           },
         },
-        files: true,
+        files: {
+          orderBy: {
+            uploadedAt: 'asc',
+          },
+        },
       },
     });
 
@@ -45,11 +49,14 @@ const dashboardCurrentFolderIdGet = async (req, res) => {
       parentFolders[1].name = '...';
     }
 
+    console.log(folder.files);
+
     res.render('dashboard', {
       title: 'Dashboard',
       script: 'dashboard.js',
       folder: folder,
       folders: folder.folders,
+      files: folder.files,
       parentFolders,
     });
   } catch (error) {

@@ -6,6 +6,7 @@
     <h1><%= locals.title %></h1>
     <button class="folder-create-open">New Folder</button>
     <button class="file-upload-open">File Upload</button>
+
     <% if (locals.folder.role === 'ROOT') { %>
       <div data-folder-role="<%= locals.folder.role %>">
         <span><%= locals.folder.name %></span>
@@ -15,11 +16,11 @@
         <% locals.parentFolders.forEach(parentFolder => { %>
           <span><a href="/dashboard/<%= parentFolder.id %>"><%= parentFolder.name %></a> / </span>
         <% }) %>
-        <div class="dropdown">
+        <div class="dropdown folder-dropdown">
           <button class="folder-actions-toggle" data-folder-role="<%= locals.folder.role %>">
             <%= locals.folder.name %>
           </button>
-          <div class="folder-actions">
+          <div class="folder-actions dropdown-actions">
             <button class="folder-create-open">New Folder</button>
             <button class="file-upload-open">File Upload</button>
             <button class="folder-rename-open">Rename</button>
@@ -28,9 +29,37 @@
         </div>
       </nav>
     <% } %>
-    <ul>
+
+    <ul class="folders">
       <% locals.folders.forEach(folder => { %>
-        <li><a href="/dashboard/<%= folder.id %>"><%= folder.name %></a></li>
+        <li>
+          <a href="/dashboard/<%= folder.id %>"><%= folder.name %></a>
+          <div class="dropdown folder-dropdown">
+            <button class="dropdown-actions-toggle">actions</button>
+            <div class="folder-actions dropdown-actions">
+              <button class="folder-rename">Rename</button>
+              <button class="folder-details">Details</button>
+              <button class="folder-delete">Delete</button>
+            </div>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+
+    <ul class="files">
+      <% locals.files.forEach(file => { %>
+        <li>
+          <p class="file-name"><%= file.name %></p>
+          <div class="dropdown file-dropdown">
+            <button class="dropdown-actions-toggle">actions</button>
+            <div class="file-actions dropdown-actions">
+              <button class="file-download">Download</button>
+              <button class="file-rename">Rename</button>
+              <button class="file-details">Details</button>
+              <button class="file-delete">Delete</button>
+            </div>
+          </div>
+        </li>
       <% }) %>
     </ul>
     
@@ -58,17 +87,16 @@
     </dialog>
 
     <% if (locals.folder.role !== 'ROOT') { %>
-    <dialog class="folder-rename">
-      <h1>Rename</h1>
-      <form action="/dashboard/<%= locals.folder.id %>/folder-rename" method="post">
-        <label for="folder-rename">Name:</label>
-        <input type="text" name="folderRename" id="folder-rename" required />
-        <button type="reset" class="folder-rename-close">Cancel</button>
-        <button type="submit" class="folder-rename-submit">Rename Folder</button>
-      </form>
-    </dialog>
+      <dialog class="folder-rename">
+        <h1>Rename</h1>
+        <form action="/dashboard/<%= locals.folder.id %>/folder-rename" method="post">
+          <label for="folder-rename">Name:</label>
+          <input type="text" name="folderRename" id="folder-rename" required />
+          <button type="reset" class="folder-rename-close">Cancel</button>
+          <button type="submit" class="folder-rename-submit">Rename Folder</button>
+        </form>
+      </dialog>
 
-    
       <dialog class="folder-delete">
         <h1>Delete Folder Confirmation</h1>
         <form action="/dashboard/<%= locals.folder.id %>/folder-delete" method="post">
