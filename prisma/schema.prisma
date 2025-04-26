@@ -52,10 +52,10 @@ model File {
   size       Int
   uploadedAt DateTime @default(now())
 
-  parent   Folder @relation(fields: [parentId], references: [id])
+  parent   Folder @relation(fields: [parentId], references: [id], onDelete: Cascade)
   parentId String
 
-  owner   User   @relation(fields: [ownerId], references: [id])
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId String
 }
 
