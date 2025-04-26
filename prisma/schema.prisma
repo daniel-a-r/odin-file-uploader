@@ -49,7 +49,7 @@ model File {
   id         String   @id @default(uuid())
   name       String
   path       String
-  uploadTime Int
+  size       Int
   uploadedAt DateTime @default(now())
 
   parent   Folder @relation(fields: [parentId], references: [id])
