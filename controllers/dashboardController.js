@@ -1,4 +1,5 @@
 import prisma from '../config/prismaClient.js';
+import path from 'node:path';
 
 const dashboardGet = async (req, res) => {
   res.redirect(`/dashboard/${req.user.root.id}`);
@@ -120,10 +121,30 @@ const folderDeletePost = async (req, res) => {
   }
 };
 
+const fileUploadPost = async (req, res) => {
+  const timestamp = new Date(req.body.timestamp).getTime();
+  const filePath = path.resolve(req.file.path);
+  try {
+    await prisma.file.create({
+      data: {
+        name: req.file.originalname,
+        path: filePath,
+        size: req.file.size,
+        parentId: req.params.currentFolderId,
+        ownerId: req.user.id,
+      },
+    });
+    res.redirect(`/dashboard/${req.params.currentFolderId}`);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export default {
   dashboardGet,
   dashboardCurrentFolderIdGet,
   folderCreatePost,
   folderRenamePost,
   folderDeletePost,
+  fileUploadPost,
 };

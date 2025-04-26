@@ -46,6 +46,16 @@
         <button type="submit" class="folder-create-submit">Create Folder</button>
       </form>
     </dialog>
+    
+    <dialog class="file-upload">
+      <h1>Upload File</h1>
+      <form action="/dashboard/<%= locals.folder.id %>/file-upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="uploadedFile" id="file" required>
+        <button type="reset" class="file-upload-close">Cancel</button>
+        <button type="submit" class="file-upload-submit">Upload File</button>
+        <input type="hidden" name="timestamp">
+      </form>
+    </dialog>
 
     <% if (locals.folder.role !== 'ROOT') { %>
     <dialog class="folder-rename">

@@ -1,19 +1,42 @@
 const folderRoleElem = document.querySelector('[data-folder-role]');
 const folderRole = folderRoleElem.dataset.folderRole;
 
-const newFolderModal = document.querySelector('dialog.folder-create');
-const newFolderModalOpenButtons = document.querySelectorAll(
+// folder create
+const folderCreateModal = document.querySelector('dialog.folder-create');
+const folderCreateModalOpenButtons = document.querySelectorAll(
   'button.folder-create-open',
 );
-newFolderModalOpenButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    newFolderModal.showModal();
+folderCreateModalOpenButtons.forEach((folderCreateOpen) => {
+  folderCreateOpen.addEventListener('click', () => {
+    folderCreateModal.showModal();
   });
 });
 
-const newFolderClose = document.querySelector('button.folder-create-close');
-newFolderClose.addEventListener('click', () => {
-  newFolderModal.close();
+const folderCreateClose = document.querySelector('button.folder-create-close');
+folderCreateClose.addEventListener('click', () => {
+  folderCreateModal.close();
+});
+
+// file upload
+const fileUploadModal = document.querySelector('dialog.file-upload');
+const fileUploadModalOpenButtons = document.querySelectorAll(
+  'button.file-upload-open',
+);
+fileUploadModalOpenButtons.forEach((fileUploadOpen) => {
+  fileUploadOpen.addEventListener('click', () => {
+    fileUploadModal.showModal();
+  });
+});
+
+const fileUploadClose = document.querySelector('button.file-upload-close');
+fileUploadClose.addEventListener('click', () => {
+  fileUploadModal.close();
+});
+
+const fileUploadForm = document.querySelector('form[enctype]');
+fileUploadForm.addEventListener('submit', () => {
+  const timestamp = document.querySelector('input[type="hidden"]');
+  timestamp.value = new Date();
 });
 
 if (folderRole === 'REGULAR') {
