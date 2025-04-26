@@ -40,26 +40,6 @@ fileUploadForm.addEventListener('submit', () => {
 });
 
 if (folderRole === 'REGULAR') {
-  // toggle folder actions dropdown
-  const folderActions = document.querySelector('div.folder-actions');
-  const folderActionsToggle = document.querySelector(
-    'button.folder-actions-toggle',
-  );
-
-  folderActionsToggle.addEventListener('click', () => {
-    const display = window.getComputedStyle(folderActions).display;
-    folderActions.style.display = display === 'none' ? 'block' : 'none';
-  });
-
-  window.addEventListener('click', (e) => {
-    if (e.target !== folderActionsToggle) {
-      const display = window.getComputedStyle(folderActions).display;
-      if (display === 'block') {
-        folderActions.style.display = 'none';
-      }
-    }
-  });
-
   // rename folder
   const folderRenameModal = document.querySelector('dialog.folder-rename');
   const folderRenameOpen = document.querySelector('button.folder-rename-open');
@@ -88,5 +68,83 @@ if (folderRole === 'REGULAR') {
 
   folderDeleteClose.addEventListener('click', () => {
     folderDeleteModal.close();
+  });
+}
+
+const folderList = document.querySelectorAll('li.folder');
+// if (folderList.length > 0) {
+
+// }
+
+const fileList = document.querySelectorAll('li.file');
+if (fileList.length > 0) {
+  // open file details modal
+  const fileDetailsOpenButtons = document.querySelectorAll(
+    'button.file-details-open',
+  );
+  const fileDetailsModal = document.querySelector('dialog.file-details');
+  fileDetailsOpenButtons.forEach((fileDetailsOpen) => {
+    fileDetailsOpen.addEventListener('click', (e) => {
+      const parent = e.target.parentElement;
+
+      const fileNameElem = document.querySelector('p.modal-info.file-name');
+      fileNameElem.textContent = parent.dataset.name;
+
+      const fileSizeElem = document.querySelector('p.modal-info.file-size');
+      fileSizeElem.textContent = parent.dataset.size;
+
+      const fileUploadedAtElem = document.querySelector(
+        'p.modal-info.file-uploaded-at',
+      );
+      fileUploadedAtElem.textContent = new Date(parent.dataset.uploadedAt);
+
+      fileDetailsModal.showModal();
+    });
+  });
+
+  // close file details modal
+  const fileDetailsClose = document.querySelector('button.file-details-close');
+  fileDetailsClose.addEventListener('click', () => {
+    fileDetailsModal.close();
+  });
+}
+
+const dropdownToggleButtons = document.querySelectorAll(
+  'button.dropdown-toggle',
+);
+if (dropdownToggleButtons.length > 0) {
+  // add event listeners to dropdown toggle buttons
+  dropdownToggleButtons.forEach((dropdownToggle) => {
+    dropdownToggle.addEventListener('click', (e) => {
+      const openDropdownActions = document.querySelector(
+        'div.dropdown-actions.open',
+      );
+      const dropdownActions = e.target.nextElementSibling;
+
+      // if dropdown is already open and not the toggle button currently clicked
+      // close the dropdown
+      if (openDropdownActions && openDropdownActions !== dropdownActions) {
+        openDropdownActions.style.display = 'none';
+        openDropdownActions.classList.remove('open');
+      }
+
+      dropdownActions.classList.add('open');
+
+      const display = window.getComputedStyle(dropdownActions).display;
+      dropdownActions.style.display = display === 'none' ? 'block' : 'none';
+    });
+  });
+
+  // close dropdown when clicking on element that is not a dropdown toggle button
+  window.addEventListener('click', (e) => {
+    if (!Array.from(dropdownToggleButtons).includes(e.target)) {
+      const openDropdownActions = document.querySelector(
+        'div.dropdown-actions.open',
+      );
+      if (openDropdownActions) {
+        openDropdownActions.style.display = 'none';
+        openDropdownActions.classList.remove('open');
+      }
+    }
   });
 }

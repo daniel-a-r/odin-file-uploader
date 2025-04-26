@@ -17,7 +17,7 @@
           <span><a href="/dashboard/<%= parentFolder.id %>"><%= parentFolder.name %></a> / </span>
         <% }) %>
         <div class="dropdown folder-dropdown">
-          <button class="folder-actions-toggle" data-folder-role="<%= locals.folder.role %>">
+          <button class="folder-actions-toggle dropdown-toggle" data-folder-role="<%= locals.folder.role %>">
             <%= locals.folder.name %>
           </button>
           <div class="folder-actions dropdown-actions">
@@ -30,15 +30,14 @@
       </nav>
     <% } %>
 
-    <ul class="folders">
+    <ul class="folder-list">
       <% locals.folders.forEach(folder => { %>
-        <li>
+        <li class="folder">
           <a href="/dashboard/<%= folder.id %>"><%= folder.name %></a>
           <div class="dropdown folder-dropdown">
-            <button class="dropdown-actions-toggle">actions</button>
+            <button class="dropdown-toggle">actions</button>
             <div class="folder-actions dropdown-actions">
               <button class="folder-rename">Rename</button>
-              <button class="folder-details">Details</button>
               <button class="folder-delete">Delete</button>
             </div>
           </div>
@@ -46,17 +45,23 @@
       <% }) %>
     </ul>
 
-    <ul class="files">
+    <ul class="file-list">
       <% locals.files.forEach(file => { %>
-        <li>
+        <li class="file">
           <p class="file-name"><%= file.name %></p>
           <div class="dropdown file-dropdown">
-            <button class="dropdown-actions-toggle">actions</button>
-            <div class="file-actions dropdown-actions">
+            <button class="dropdown-toggle">actions</button>
+            <div 
+              class="file-actions dropdown-actions" 
+              data-name="<%= file.name %>" 
+              data-size="<%= file.size %>" 
+              data-uploaded-at="<%= file.uploadedAt %>"
+              data-file-id="<%= file.id %>"
+            >
               <button class="file-download">Download</button>
-              <button class="file-rename">Rename</button>
-              <button class="file-details">Details</button>
-              <button class="file-delete">Delete</button>
+              <button class="file-rename-open">Rename</button>
+              <button class="file-details-open">Details</button>
+              <button class="file-delete-open">Delete</button>
             </div>
           </div>
         </li>
@@ -107,6 +112,15 @@
         </form>
       </dialog>
     <% } %>
+    
+    <dialog class="file-details">
+      <ul>
+        <li><p class="modal-info file-name"></p></li>
+        <li><p>Size</p><p class="modal-info file-size"></p></li>
+        <li><p>Uploaded</p><p class="modal-info file-uploaded-at"></p></li>
+        <button class="file-details-close">Close</button>
+      </ul>
+    </dialog>
     
   </body>
 </html>
