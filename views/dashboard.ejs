@@ -36,9 +36,13 @@
           <a href="/dashboard/<%= folder.id %>"><%= folder.name %></a>
           <div class="dropdown folder-dropdown">
             <button class="dropdown-toggle">actions</button>
-            <div class="folder-actions dropdown-actions">
-              <button class="folder-rename">Rename</button>
-              <button class="folder-delete">Delete</button>
+            <div 
+              class="folder-actions dropdown-actions" 
+              data-folder-id="<%= folder.id %>" 
+              data-folder-name="<%= folder.name %>"
+            >
+              <button class="folder-rename-open">Rename</button>
+              <button class="folder-delete-open">Delete</button>
             </div>
           </div>
         </li>
@@ -58,7 +62,7 @@
               data-uploaded-at="<%= file.uploadedAt %>"
               data-file-id="<%= file.id %>"
             >
-              <button class="file-download">Download</button>
+              <a class="file-download" href="<%= file.path %>" download="<%= file.name %>">Download</a>
               <button class="file-rename-open">Rename</button>
               <button class="file-details-open">Details</button>
               <button class="file-delete-open">Delete</button>
@@ -91,10 +95,10 @@
       </form>
     </dialog>
 
-    <% if (locals.folder.role !== 'ROOT') { %>
+    <% if (locals.folder.role !== 'ROOT' || locals.folders.length > 0) { %>
       <dialog class="folder-rename">
         <h1>Rename</h1>
-        <form action="/dashboard/<%= locals.folder.id %>/folder-rename" method="post">
+        <form action="/dashboard/<%= locals.folder.id %>/folder-rename" method="post" class="folder-rename">
           <label for="folder-rename">Name:</label>
           <input type="text" name="folderRename" id="folder-rename" required />
           <button type="reset" class="folder-rename-close">Cancel</button>
@@ -104,9 +108,9 @@
 
       <dialog class="folder-delete">
         <h1>Delete Folder Confirmation</h1>
-        <form action="/dashboard/<%= locals.folder.id %>/folder-delete" method="post">
-          <h2>Are you sure you want to delete folder <%= locals.folder.name %>?</h2>
-          <h2>Doing so will delete folders and files inside this folder.</h2>
+        <form action="/dashboard/<%= locals.folder.id %>/folder-delete" method="post" class="folder-delete">
+          <h2>Are you sure you want to delete <span class="modal-info folder-name">FOLDER TITLE</span> folder?</h2>
+          <h2>Doing so will delete all contents inside folder.</h2>
           <button type="button" class="folder-delete-close">Cancel</button>
           <button type="submit" class="folder-delte-submit">Delete</button>
         </form>

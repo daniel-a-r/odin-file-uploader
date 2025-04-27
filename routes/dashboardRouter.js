@@ -16,5 +16,13 @@ router.post(
   upload.single('uploadedFile'),
   controller.fileUploadPost,
 );
+router.post(
+  '/:currentFolderId/folder-rename/:childFolderId',
+  controller.childFolderRenamePost,
+);
+router.post(
+  '/:currentFolderId/folder-delete/:childFolderId',
+  controller.childFolderDeletePost,
+);
 
 export default router;

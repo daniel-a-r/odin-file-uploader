@@ -49,8 +49,6 @@ const dashboardCurrentFolderIdGet = async (req, res, next) => {
       parentFolders[1].name = '...';
     }
 
-    console.log(folder.files);
-
     res.render('dashboard', {
       title: 'Dashboard',
       script: 'dashboard.js',
@@ -148,6 +146,37 @@ const fileUploadPost = async (req, res) => {
   }
 };
 
+const childFolderRenamePost = async (req, res) => {
+  try {
+    await prisma.folder.update({
+      where: {
+        id: req.params.childFolderId,
+        parentId: req.params.currentFolderId,
+      },
+      data: {
+        name: req.body.folderRename,
+      },
+    });
+    res.redirect(`/dashboard/${req.params.currentFolderId}`);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const childFolderDeletePost = async (req, res) => {
+  try {
+    await prisma.folder.delete({
+      where: {
+        id: req.params.childFolderId,
+        parentId: req.params.currentFolderId,
+      },
+    });
+    res.redirect(`/dashboard/${req.params.currentFolderId}`);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export default {
   dashboardGet,
   dashboardCurrentFolderIdGet,
@@ -155,4 +184,6 @@ export default {
   folderRenamePost,
   folderDeletePost,
   fileUploadPost,
+  childFolderRenamePost,
+  childFolderDeletePost,
 };

@@ -1,6 +1,3 @@
-const folderRoleElem = document.querySelector('[data-folder-role]');
-const folderRole = folderRoleElem.dataset.folderRole;
-
 // folder create
 const folderCreateModal = document.querySelector('dialog.folder-create');
 const folderCreateModalOpenButtons = document.querySelectorAll(
@@ -39,42 +36,74 @@ fileUploadForm.addEventListener('submit', () => {
   timestamp.value = new Date();
 });
 
-if (folderRole === 'REGULAR') {
+const folderRoleElem = document.querySelector('[data-folder-role]');
+const folderRole = folderRoleElem.dataset.folderRole;
+const folderList = document.querySelectorAll('li.folder');
+
+if (folderRole === 'REGULAR' || folderList.length > 0) {
   // rename folder
   const folderRenameModal = document.querySelector('dialog.folder-rename');
-  const folderRenameOpen = document.querySelector('button.folder-rename-open');
+
+  const folderRenameOpenButtons = document.querySelectorAll(
+    'button.folder-rename-open',
+  );
+  folderRenameOpenButtons.forEach((folderRenameOpen) => {
+    folderRenameOpen.addEventListener('click', (e) => {
+      // add child folder id to end of URL
+      const parentElement = e.target.parentElement;
+      const folderId = parentElement.dataset.folderId;
+      const folderRenameForm = document.querySelector('form.folder-rename');
+      if (folderId) {
+        folderRenameForm.action += `/${folderId}`;
+      }
+      folderRenameModal.showModal();
+    });
+  });
+
   const folderRenameClose = document.querySelector(
     'button.folder-rename-close',
   );
-
-  folderRenameOpen.addEventListener('click', () => {
-    folderRenameModal.showModal();
-  });
-
   folderRenameClose.addEventListener('click', () => {
+    // remove child folder id from end of URL if it exists
+    const folderRenameForm = document.querySelector('form.folder-rename');
+    const actionStrArr = folderRenameForm.action.split('/');
+    if (actionStrArr.length === 7) {
+      folderRenameForm.action = actionStrArr.slice(0, -1).join('/');
+    }
     folderRenameModal.close();
   });
 
   // delete folder
-  const folderDeleteOpen = document.querySelector('button.folder-delete-open');
   const folderDeleteModal = document.querySelector('dialog.folder-delete');
+  const folderDeleteOpenButtons = document.querySelectorAll(
+    'button.folder-delete-open',
+  );
+  folderDeleteOpenButtons.forEach((folderDeleteOpen) => {
+    folderDeleteOpen.addEventListener('click', (e) => {
+      // add child folder id to end of URL
+      const parentElement = e.target.parentElement;
+      const folderId = parentElement.dataset.folderId;
+      const folderDeleteForm = document.querySelector('form.folder-delete');
+      if (folderId) {
+        folderDeleteForm.action += `/${folderId}`;
+      }
+      folderDeleteModal.showModal();
+    });
+  });
+
   const folderDeleteClose = document.querySelector(
     'button.folder-delete-close',
   );
-
-  folderDeleteOpen.addEventListener('click', () => {
-    folderDeleteModal.showModal();
-  });
-
   folderDeleteClose.addEventListener('click', () => {
+    // remove child folder id from end of URL if it exists
+    const folderDeleteForm = document.querySelector('form.folder-delete');
+    const actionStrArr = folderDeleteForm.action.split('/');
+    if (actionStrArr.length === 7) {
+      folderDeleteForm.action = actionStrArr.slice(0, -1).join('/');
+    }
     folderDeleteModal.close();
   });
 }
-
-const folderList = document.querySelectorAll('li.folder');
-// if (folderList.length > 0) {
-
-// }
 
 const fileList = document.querySelectorAll('li.file');
 if (fileList.length > 0) {
