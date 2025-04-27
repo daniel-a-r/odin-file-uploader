@@ -151,6 +151,7 @@ const childFolderRenamePost = async (req, res) => {
       where: {
         id: req.params.childFolderId,
         parentId: req.params.currentFolderId,
+        ownerId: req.user.id,
       },
       data: {
         name: req.body.folderRename,
@@ -168,6 +169,7 @@ const childFolderDeletePost = async (req, res) => {
       where: {
         id: req.params.childFolderId,
         parentId: req.params.currentFolderId,
+        ownerId: req.user.id,
       },
     });
     res.redirect(`/dashboard/${req.params.currentFolderId}`);
@@ -221,4 +223,5 @@ export default {
   childFolderRenamePost,
   childFolderDeletePost,
   fileRenamePost,
+  fileDeletePost,
 };

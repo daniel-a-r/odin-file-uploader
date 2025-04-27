@@ -163,6 +163,37 @@ if (fileList.length > 0) {
   fileDetailsClose.addEventListener('click', () => {
     fileDetailsModal.close();
   });
+
+  // delete file
+  const fileDeleteModal = document.querySelector('dialog.file-delete');
+  const fileDeleteOpenButtons = document.querySelectorAll(
+    'button.file-delete-open',
+  );
+  fileDeleteOpenButtons.forEach((fileDeleteOpen) => {
+    fileDeleteOpen.addEventListener('click', (e) => {
+      // add child folder id to end of URL
+      const parentElement = e.target.parentElement;
+      const fileId = parentElement.dataset.id;
+      const fileDeleteForm = document.querySelector('form.file-delete');
+      if (fileId) {
+        fileDeleteForm.action += `/${fileId}`;
+      }
+      const fileTitleSpan = document.querySelector('span.modal-info.file-name');
+      fileTitleSpan.textContent = parentElement.dataset.name;
+      fileDeleteModal.showModal();
+    });
+  });
+
+  const fileDeleteClose = document.querySelector('button.file-delete-close');
+  fileDeleteClose.addEventListener('click', () => {
+    // remove child file id from end of URL if it exists
+    const fileDeleteForm = document.querySelector('form.file-delete');
+    const pathnameArr = new URL(fileDeleteForm.action).pathname.split('/');
+    if (pathnameArr.length === 5) {
+      fileDeleteForm.action = pathnameArr.slice(0, -1).join('/');
+    }
+    fileDeleteModal.close();
+  });
 }
 
 const dropdownToggleButtons = document.querySelectorAll(

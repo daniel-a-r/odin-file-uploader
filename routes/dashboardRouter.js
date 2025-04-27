@@ -25,5 +25,6 @@ router.post(
   controller.childFolderDeletePost,
 );
 router.post('/:currentFolderId/file-rename/:fileId', controller.fileRenamePost);
+router.post('/:currentFolderId/file-delete/:fileId', controller.fileDeletePost);
 
 export default router;
