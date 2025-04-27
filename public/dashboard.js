@@ -81,6 +81,10 @@ if (folderRole === 'REGULAR' || folderList.length > 0) {
       if (folderId) {
         folderDeleteForm.action += `/${folderId}`;
       }
+      const folderTitleSpan = document.querySelector(
+        'span.modal-info.folder-name',
+      );
+      folderTitleSpan.textContent = parentElement.dataset.folderName;
       folderDeleteModal.showModal();
     });
   });
