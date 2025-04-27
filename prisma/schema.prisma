@@ -50,6 +50,7 @@ model File {
   name       String
   path       String
   size       Int
+  mimetype   String
   uploadedAt DateTime @default(now())
 
   parent   Folder @relation(fields: [parentId], references: [id], onDelete: Cascade)
