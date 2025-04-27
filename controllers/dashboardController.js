@@ -128,7 +128,6 @@ const folderDeletePost = async (req, res) => {
 };
 
 const fileUploadPost = async (req, res) => {
-  const timestamp = new Date(req.body.timestamp).getTime();
   const filePath = path.resolve(req.file.path);
   try {
     await prisma.file.create({
