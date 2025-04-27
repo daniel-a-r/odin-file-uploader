@@ -105,6 +105,35 @@ if (folderRole === 'REGULAR' || folderList.length > 0) {
 
 const fileList = document.querySelectorAll('li.file');
 if (fileList.length > 0) {
+  // rename file
+  const fileRenameModal = document.querySelector('dialog.file-rename');
+  const fileRenameOpenButtons = document.querySelectorAll(
+    'button.file-rename-open',
+  );
+  fileRenameOpenButtons.forEach((fileRenameOpen) => {
+    fileRenameOpen.addEventListener('click', (e) => {
+      // add child folder id to end of URL
+      const parentElement = e.target.parentElement;
+      const fileId = parentElement.dataset.id;
+      const fileRenameForm = document.querySelector('form.file-rename');
+      if (fileId) {
+        fileRenameForm.action += `/${fileId}`;
+      }
+      fileRenameModal.showModal();
+    });
+  });
+
+  const fileRenameClose = document.querySelector('button.file-rename-close');
+  fileRenameClose.addEventListener('click', () => {
+    // remove child folder id from end of URL if it exists
+    const fileRenameForm = document.querySelector('form.file-rename');
+    const actionStrArr = fileRenameForm.action.split('/');
+    if (actionStrArr.length === 7) {
+      fileRenameForm.action = actionStrArr.slice(0, -1).join('/');
+    }
+    fileRenameModal.close();
+  });
+
   // open file details modal
   const fileDetailsOpenButtons = document.querySelectorAll(
     'button.file-details-open',

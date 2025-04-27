@@ -176,6 +176,25 @@ const childFolderDeletePost = async (req, res) => {
   }
 };
 
+const fileRenamePost = async (req, res, next) => {
+  try {
+    await prisma.file.update({
+      where: {
+        id: req.params.fileId,
+        parentId: req.params.currentFolderId,
+        ownerId: req.user.id,
+      },
+      data: {
+        name: req.body.fileRename,
+      },
+    });
+    res.redirect(`/dashboard/${req.params.currentFolderId}`);
+  } catch (error) {
+    console.error(error);
+    next();
+  }
+};
+
 export default {
   dashboardGet,
   dashboardCurrentFolderIdGet,
@@ -185,4 +204,5 @@ export default {
   fileUploadPost,
   childFolderRenamePost,
   childFolderDeletePost,
+  fileRenamePost,
 };

@@ -60,7 +60,7 @@
               data-name="<%= file.name %>" 
               data-size="<%= file.size %>" 
               data-uploaded-at="<%= file.uploadedAt %>"
-              data-file-id="<%= file.id %>"
+              data-id="<%= file.id %>"
             >
               <a class="file-download" href="<%= file.path %>" download="<%= file.name %>">Download</a>
               <button class="file-rename-open">Rename</button>
@@ -96,7 +96,7 @@
 
     <% if (locals.folder.role !== 'ROOT' || locals.folders.length > 0) { %>
       <dialog class="folder-rename">
-        <h1>Rename</h1>
+        <h1>Rename Folder</h1>
         <form action="/dashboard/<%= locals.folder.id %>/folder-rename" method="post" class="folder-rename">
           <label for="folder-rename">Name:</label>
           <input type="text" name="folderRename" id="folder-rename" required />
@@ -115,15 +115,38 @@
         </form>
       </dialog>
     <% } %>
+
+    <% if (locals.files.length > 0) { %>
+      <dialog class="file-rename">
+        <h1>Rename File</h1>
+        <form action="/dashboard/<%= locals.folder.id %>/file-rename" method="post" class="file-rename">
+          <label for="file-rename">Name:</label>
+          <input type="text" name="fileRename" id="file-rename" required />
+          <button type="reset" class="file-rename-close">Cancel</button>
+          <button type="submit" class="file-rename-submit">Rename Folder</button>
+        </form>
+      </dialog>
+
+      <dialog class="file-details">
+        <ul>
+          <li><p class="modal-info file-name"></p></li>
+          <li><p>Size</p><p class="modal-info file-size"></p></li>
+          <li><p>Uploaded</p><p class="modal-info file-uploaded-at"></p></li>
+          <button class="file-details-close">Close</button>
+        </ul>
+      </dialog>
+
+      <dialog class="file-delete">
+        <h1>Delete File Confirmation</h1>
+        <form action="/dashboard/<%= locals.folder.id %>/file-delete" method="post" class="file-delete">
+          <h2>Are you sure you want to delete <span class="modal-info file-name">FOLDER TITLE</span>?</h2>
+          <button type="button" class="file-delete-close">Cancel</button>
+          <button type="submit" class="file-delte-submit">Delete</button>
+        </form>
+      </dialog>
+    <% } %>
     
-    <dialog class="file-details">
-      <ul>
-        <li><p class="modal-info file-name"></p></li>
-        <li><p>Size</p><p class="modal-info file-size"></p></li>
-        <li><p>Uploaded</p><p class="modal-info file-uploaded-at"></p></li>
-        <button class="file-details-close">Close</button>
-      </ul>
-    </dialog>
+    
     
   </body>
 </html>
