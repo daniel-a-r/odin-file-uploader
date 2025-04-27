@@ -30,12 +30,6 @@ fileUploadClose.addEventListener('click', () => {
   fileUploadModal.close();
 });
 
-const fileUploadForm = document.querySelector('form[enctype]');
-fileUploadForm.addEventListener('submit', () => {
-  const timestamp = document.querySelector('input[type="hidden"]');
-  timestamp.value = new Date();
-});
-
 const folderRoleElem = document.querySelector('[data-folder-role]');
 const folderRole = folderRoleElem.dataset.folderRole;
 const folderList = document.querySelectorAll('li.folder');
