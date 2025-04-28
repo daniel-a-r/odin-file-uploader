@@ -1,7 +1,6 @@
 import app from './config/app.config.js';
 import indexRouter from './routes/indexRouter.js';
 import dashboardRouter from './routes/dashboardRouter.js';
-import { console } from 'node:inspector';
 
 const PORT = process.env.PORT || 3000;
 
