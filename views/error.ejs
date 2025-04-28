@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('./partials/head') %>
+  <%- include('./partials/head', { title: locals.errorMsg }) %>
   <body>
     <%- include('./partials/nav') %>
     <h1>Something Went Wrong</h1>
+    <% if (locals.errorMsg) { %>
+      <h2><%= locals.errorMsg %></h2>
+    <% } %>
   </body>
 </html>

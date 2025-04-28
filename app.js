@@ -15,7 +15,7 @@ app.use((req, res) => {
 
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).render('error', { errorMsg: err.message });
+  res.status(500).render('error', { errorMsg: 'Internal Server Error' });
 });
 
 app.listen(PORT, () => console.log(`App listening on port ${PORT}`));

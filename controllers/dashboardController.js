@@ -1,8 +1,33 @@
 import prisma from '../config/prismaClient.js';
-import path from 'node:path';
+
+const checkUserAuth = (req, res, next) => {
+  if (!req.user) {
+    console.log('user not logged in');
+    res.status(401).redirect('/login');
+    return;
+  }
+  next();
+};
 
 const dashboardGet = async (req, res) => {
   res.redirect(`/dashboard/${req.user.root.id}`);
+};
+
+const checkFolderAuth = async (req, res, next) => {
+  const pathList = req.path.split('/');
+  try {
+    await prisma.folder.findUniqueOrThrow({
+      where: {
+        id: pathList[1],
+        ownerId: req.user.id,
+      },
+    });
+
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(404).render('notFound');
+  }
 };
 
 const dashboardCurrentFolderIdGet = async (req, res, next) => {
@@ -26,13 +51,18 @@ const dashboardCurrentFolderIdGet = async (req, res, next) => {
       },
     });
 
+    if (folder.ownerId !== req.user.id) {
+      res.status(403).render('error', { errorMsg: '403 Forbidden ' });
+      return;
+    }
+
     const parentFolders = [];
 
     if (req.user.root.id !== folder.id) {
       let parentId = folder.parentId;
       const folders = [];
       for (let i = 0; i < 3; i++) {
-        const parentFolder = await prisma.folder.findUnique({
+        const parentFolder = await prisma.folder.findUniqueOrThrow({
           where: {
             id: parentId,
           },
@@ -81,19 +111,15 @@ const folderRenamePost = async (req, res) => {
     return;
   }
 
-  try {
-    await prisma.folder.update({
-      where: {
-        id: req.params.currentFolderId,
-      },
-      data: {
-        name: req.body.folderRename,
-      },
-    });
-    res.redirect(`/dashboard/${req.params.currentFolderId}`);
-  } catch (error) {
-    console.error(error);
-  }
+  await prisma.folder.update({
+    where: {
+      id: req.params.currentFolderId,
+    },
+    data: {
+      name: req.body.folderRename,
+    },
+  });
+  res.redirect(`/dashboard/${req.params.currentFolderId}`);
 };
 
 const folderDeletePost = async (req, res) => {
@@ -103,119 +129,94 @@ const folderDeletePost = async (req, res) => {
     return;
   }
 
-  try {
-    const { parentId } = await prisma.folder.findUnique({
-      where: {
-        id: req.params.currentFolderId,
-        ownerId: req.user.id,
-      },
-      select: {
-        parentId: true,
-      },
-    });
+  const { parentId } = await prisma.folder.findUniqueOrThrow({
+    where: {
+      id: req.params.currentFolderId,
+      ownerId: req.user.id,
+    },
+    select: {
+      parentId: true,
+    },
+  });
 
-    await prisma.folder.delete({
-      where: {
-        id: req.params.currentFolderId,
-        ownerId: req.user.id,
-      },
-    });
+  await prisma.folder.delete({
+    where: {
+      id: req.params.currentFolderId,
+      ownerId: req.user.id,
+    },
+  });
 
-    res.redirect(`/dashboard/${parentId}`);
-  } catch (error) {
-    console.error(error);
-  }
+  res.redirect(`/dashboard/${parentId}`);
 };
 
 const fileUploadPost = async (req, res) => {
-  console.log(req.file);
-  try {
-    await prisma.file.create({
-      data: {
-        name: req.file.originalname,
-        path: req.file.path,
-        size: req.file.size,
-        mimetype: req.file.mimetype,
-        parentId: req.params.currentFolderId,
-        ownerId: req.user.id,
-      },
-    });
-    res.redirect(`/dashboard/${req.params.currentFolderId}`);
-  } catch (error) {
-    console.error(error);
-  }
+  await prisma.file.create({
+    data: {
+      name: req.file.originalname,
+      path: req.file.path,
+      size: req.file.size,
+      mimetype: req.file.mimetype,
+      parentId: req.params.currentFolderId,
+      ownerId: req.user.id,
+    },
+  });
+  res.redirect(`/dashboard/${req.params.currentFolderId}`);
 };
 
 const childFolderRenamePost = async (req, res) => {
-  try {
-    await prisma.folder.update({
-      where: {
-        id: req.params.childFolderId,
-        parentId: req.params.currentFolderId,
-        ownerId: req.user.id,
-      },
-      data: {
-        name: req.body.folderRename,
-      },
-    });
-    res.redirect(`/dashboard/${req.params.currentFolderId}`);
-  } catch (error) {
-    console.error(error);
-  }
+  await prisma.folder.update({
+    where: {
+      id: req.params.childFolderId,
+      parentId: req.params.currentFolderId,
+      ownerId: req.user.id,
+    },
+    data: {
+      name: req.body.folderRename,
+    },
+  });
+  res.redirect(`/dashboard/${req.params.currentFolderId}`);
 };
 
 const childFolderDeletePost = async (req, res) => {
-  try {
-    await prisma.folder.delete({
-      where: {
-        id: req.params.childFolderId,
-        parentId: req.params.currentFolderId,
-        ownerId: req.user.id,
-      },
-    });
-    res.redirect(`/dashboard/${req.params.currentFolderId}`);
-  } catch (error) {
-    console.error(error);
-  }
+  await prisma.folder.delete({
+    where: {
+      id: req.params.childFolderId,
+      parentId: req.params.currentFolderId,
+      ownerId: req.user.id,
+    },
+  });
+  res.redirect(`/dashboard/${req.params.currentFolderId}`);
 };
 
-const fileRenamePost = async (req, res, next) => {
-  try {
-    await prisma.file.update({
-      where: {
-        id: req.params.fileId,
-        parentId: req.params.currentFolderId,
-        ownerId: req.user.id,
-      },
-      data: {
-        name: req.body.fileRename,
-      },
-    });
-    res.redirect(`/dashboard/${req.params.currentFolderId}`);
-  } catch (error) {
-    console.error(error);
-    next();
-  }
+const fileRenamePost = async (req, res) => {
+  await prisma.file.update({
+    where: {
+      id: req.params.fileId,
+      parentId: req.params.currentFolderId,
+      ownerId: req.user.id,
+    },
+    data: {
+      name: req.body.fileRename,
+    },
+  });
+  res.redirect(`/dashboard/${req.params.currentFolderId}`);
 };
 
-const fileDeletePost = async (req, res, next) => {
-  try {
-    await prisma.file.delete({
-      where: {
-        id: req.params.fileId,
-        parentId: req.params.currentFolderId,
-        ownerId: req.user.id,
-      },
-    });
-    res.redirect(`/dashboard/${req.params.currentFolderId}`);
-  } catch (error) {
-    console.log(error);
-    next();
-  }
+const fileDeletePost = async (req, res) => {
+  await prisma.file.delete({
+    where: {
+      id: req.params.fileId,
+      parentId: req.params.currentFolderId,
+      ownerId: req.user.id,
+    },
+  });
+  res.redirect(`/dashboard/${req.params.currentFolderId}`);
 };
 
 export default {
+  checkUserAuth,
   dashboardGet,
+  checkFolderAuth,
   dashboardCurrentFolderIdGet,
   folderCreatePost,
   folderRenamePost,

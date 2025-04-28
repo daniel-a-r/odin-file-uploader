@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('./partials/head') %>
+  <%- include('./partials/head', { title: 'Not Found'}) %>
   <body>
     <%- include('./partials/nav') %>
     <h1><%= locals.errMsg %></h1>
