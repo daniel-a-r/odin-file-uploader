@@ -52,7 +52,7 @@ const dashboardCurrentFolderIdGet = async (req, res, next) => {
     });
 
     if (folder.ownerId !== req.user.id) {
-      res.status(403).render('error', { errorMsg: '403 Forbidden ' });
+      res.status(403).render('error', { errorMsg: '403 Forbidden' });
       return;
     }
 
