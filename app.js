@@ -14,8 +14,14 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
+  let statusCode = null;
+  let errorMsg = 'Internal Server Error';
   console.error(err);
-  res.status(500).render('error', { errorMsg: 'Internal Server Error' });
+  if (err.code === 'P2025') {
+    statusCode = 404;
+    errorMsg = 'Record Not Found';
+  }
+  res.status(statusCode || 500).render('error', { errorMsg });
 });
 
 app.listen(PORT, () => console.log(`App listening on port ${PORT}`));

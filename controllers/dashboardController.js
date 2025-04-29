@@ -13,92 +13,72 @@ const dashboardGet = async (req, res) => {
   res.redirect(`/dashboard/${req.user.root.id}`);
 };
 
-const checkFolderAuth = async (req, res, next) => {
-  const pathList = req.path.split('/');
-  try {
-    await prisma.folder.findUniqueOrThrow({
-      where: {
-        id: pathList[1],
-        ownerId: req.user.id,
-      },
-    });
-
-    next();
-  } catch (error) {
-    console.error(error);
-    res.status(404).render('notFound');
-  }
-};
-
-const dashboardCurrentFolderIdGet = async (req, res, next) => {
-  try {
-    const folder = await prisma.folder.findUniqueOrThrow({
-      where: {
-        id: req.params.currentFolderId,
-        ownerId: req.user.id,
-      },
-      include: {
-        folders: {
-          orderBy: {
-            createdAt: 'asc',
-          },
-        },
-        files: {
-          orderBy: {
-            uploadedAt: 'asc',
-          },
+const dashboardCurrentFolderIdGet = async (req, res) => {
+  const folder = await prisma.folder.findUniqueOrThrow({
+    where: {
+      id: req.params.currentFolderId,
+      ownerId: req.user.id,
+    },
+    include: {
+      folders: {
+        orderBy: {
+          createdAt: 'asc',
         },
       },
-    });
+      files: {
+        orderBy: {
+          uploadedAt: 'asc',
+        },
+      },
+    },
+  });
 
-    if (folder.ownerId !== req.user.id) {
-      res.status(403).render('error', { errorMsg: '403 Forbidden' });
-      return;
+  const parentFolders = [];
+
+  if (req.user.root.id !== folder.id) {
+    let parentId = folder.parentId;
+    const folders = [];
+    for (let i = 0; i < 3; i++) {
+      const parentFolder = await prisma.folder.findUniqueOrThrow({
+        where: {
+          id: parentId,
+        },
+      });
+      if (parentFolder.id === req.user.root.id) break;
+      folders.push(parentFolder);
+      parentId = parentFolder.parentId;
     }
-
-    const parentFolders = [];
-
-    if (req.user.root.id !== folder.id) {
-      let parentId = folder.parentId;
-      const folders = [];
-      for (let i = 0; i < 3; i++) {
-        const parentFolder = await prisma.folder.findUniqueOrThrow({
-          where: {
-            id: parentId,
-          },
-        });
-        if (parentFolder.id === req.user.root.id) break;
-        folders.push(parentFolder);
-        parentId = parentFolder.parentId;
-      }
-      folders.reverse();
-      parentFolders.push(req.user.root, ...folders);
-    }
-
-    if (parentFolders.length === 4) {
-      parentFolders[1].name = '...';
-    }
-
-    res.render('dashboard', {
-      title: 'Dashboard',
-      script: 'dashboard.js',
-      folder: folder,
-      folders: folder.folders,
-      files: folder.files,
-      parentFolders,
-    });
-  } catch (error) {
-    console.error(error);
-    next();
+    folders.reverse();
+    parentFolders.push(req.user.root, ...folders);
   }
+
+  if (parentFolders.length === 4) {
+    parentFolders[1].name = '...';
+  }
+
+  res.render('dashboard', {
+    title: 'Dashboard',
+    script: 'dashboard.js',
+    folder: folder,
+    folders: folder.folders,
+    files: folder.files,
+    parentFolders,
+  });
 };
 
 const folderCreatePost = async (req, res) => {
-  await prisma.folder.create({
-    data: {
-      name: req.body.newFolderName,
+  await prisma.folder.update({
+    where: {
+      id: req.params.currentFolderId,
       ownerId: req.user.id,
-      parentId: req.params.currentFolderId,
+    },
+    data: {
+      folders: {
+        create: {
+          name: req.body.newFolderName,
+          ownerId: req.user.id,
+        },
+      },
     },
   });
   res.redirect(`/dashboard/${req.params.currentFolderId}`);
@@ -114,6 +94,7 @@ const folderRenamePost = async (req, res) => {
   await prisma.folder.update({
     where: {
       id: req.params.currentFolderId,
+      ownerId: req.user.id,
     },
     data: {
       name: req.body.folderRename,
@@ -150,14 +131,21 @@ const folderDeletePost = async (req, res) => {
 };
 
 const fileUploadPost = async (req, res) => {
-  await prisma.file.create({
-    data: {
-      name: req.file.originalname,
-      path: req.file.path,
-      size: req.file.size,
-      mimetype: req.file.mimetype,
-      parentId: req.params.currentFolderId,
+  await prisma.folder.update({
+    where: {
+      id: req.params.currentFolderId,
       ownerId: req.user.id,
+    },
+    data: {
+      files: {
+        create: {
+          name: req.file.originalname,
+          path: req.file.path,
+          size: req.file.size,
+          mimetype: req.file.mimetype,
+          ownerId: req.user.id,
+        },
+      },
     },
   });
   res.redirect(`/dashboard/${req.params.currentFolderId}`);
@@ -216,7 +204,6 @@ const fileDeletePost = async (req, res) => {
 export default {
   checkUserAuth,
   dashboardGet,
-  checkFolderAuth,
   dashboardCurrentFolderIdGet,
   folderCreatePost,
   folderRenamePost,

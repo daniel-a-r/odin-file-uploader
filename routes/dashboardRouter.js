@@ -9,9 +9,6 @@ const router = new Router();
 router.use(controller.checkUserAuth);
 
 router.get('/', controller.dashboardGet);
-
-router.use(controller.checkFolderAuth);
-
 router.get('/:currentFolderId', controller.dashboardCurrentFolderIdGet);
 router.post('/:currentFolderId/folder-create', controller.folderCreatePost);
 router.post('/:currentFolderId/folder-rename', controller.folderRenamePost);
