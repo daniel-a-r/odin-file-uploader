@@ -1,4 +1,10 @@
 import prisma from '../config/prismaClient.js';
+import { createClient } from '@supabase/supabase-js';
+import path from 'node:path';
+import fs from 'node:fs/promises';
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient(process.env.STORAGE_URL, process.env.STORAGE_KEY);
 
 const checkUserAuth = (req, res, next) => {
   if (!req.user) {
@@ -131,6 +137,23 @@ const folderDeletePost = async (req, res) => {
 };
 
 const fileUploadPost = async (req, res) => {
+  const filePath = path.resolve(`uploads/${req.file.filename}`);
+  // console.log({ filePath });
+  const file = await fs.readFile(filePath);
+  // console.log({ file });
+  // const { data, error } = await supabase.storage.from('files').list();
+  // console.log({ data, error });
+  const { data, error } = await supabase.storage
+    .from('files')
+    .upload(`${req.user.id}/${req.file.filename}`, file, {
+      contentType: `${req.file.mimetype}`,
+    });
+  // console.log({ data, error });
+
+  const urlData = await supabase.storage
+    .from('files')
+    .getPublicUrl(data.path, { download: req.file.originalname });
+
   await prisma.folder.update({
     where: {
       id: req.params.currentFolderId,
@@ -139,8 +162,9 @@ const fileUploadPost = async (req, res) => {
     data: {
       files: {
         create: {
+          id: req.file.filename,
           name: req.file.originalname,
-          path: req.file.path,
+          path: urlData.data.publicUrl,
           size: req.file.size,
           mimetype: req.file.mimetype,
           ownerId: req.user.id,
@@ -148,6 +172,8 @@ const fileUploadPost = async (req, res) => {
       },
     },
   });
+
+  await fs.rm(filePath);
   res.redirect(`/dashboard/${req.params.currentFolderId}`);
 };
 
@@ -177,6 +203,12 @@ const childFolderDeletePost = async (req, res) => {
 };
 
 const fileRenamePost = async (req, res) => {
+  const { data } = supabase.storage
+    .from('files')
+    .getPublicUrl(`${req.user.id}/${req.params.fileId}`, {
+      download: req.body.fileRename,
+    });
+
   await prisma.file.update({
     where: {
       id: req.params.fileId,
@@ -185,12 +217,17 @@ const fileRenamePost = async (req, res) => {
     },
     data: {
       name: req.body.fileRename,
+      path: data.publicUrl,
     },
   });
   res.redirect(`/dashboard/${req.params.currentFolderId}`);
 };
 
 const fileDeletePost = async (req, res) => {
+  const { error } = await supabase.storage
+    .from('files')
+    .remove([`${req.user.id}/${req.params.fileId}`]);
+
   await prisma.file.delete({
     where: {
       id: req.params.fileId,
