@@ -161,6 +161,13 @@ if (fileList.length > 0) {
   fileRenameClose.addEventListener('click', handleFileRenameClose);
 
   // open file details modal
+  const bytesToSize = (bytes) => {
+    const kbToBytes = 1000;
+    const sizes = ['Bytes', 'KB', 'MB'];
+    const index = Math.floor(Math.log10(bytes) / Math.log10(kbToBytes));
+    return `${(bytes / Math.pow(kbToBytes, index)).toFixed(2)} ${sizes[index]}`;
+  };
+
   const fileDetailsOpenButtons = document.querySelectorAll(
     'button.file-details-open',
   );
@@ -173,7 +180,7 @@ if (fileList.length > 0) {
       fileNameElem.textContent = parent.dataset.name;
 
       const fileSizeElem = document.querySelector('p.modal-info.file-size');
-      fileSizeElem.textContent = parent.dataset.size;
+      fileSizeElem.textContent = bytesToSize(parent.dataset.size);
 
       const fileUploadedAtElem = document.querySelector(
         'p.modal-info.file-uploaded-at',
