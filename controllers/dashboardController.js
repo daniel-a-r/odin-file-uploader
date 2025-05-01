@@ -3,6 +3,8 @@ import { createClient } from '@supabase/supabase-js';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 
+const FILE_SIZE_LIMIT = 50000000;
+
 // Create a single supabase client for interacting with your database
 const supabase = createClient(process.env.STORAGE_URL, process.env.STORAGE_KEY);
 
@@ -19,6 +21,7 @@ const dashboardGet = async (req, res) => {
   res.redirect(`/dashboard/${req.user.root.id}`);
 };
 
+// TODO: break up into smaller functions
 const dashboardCurrentFolderIdGet = async (req, res) => {
   const folder = await prisma.folder.findUniqueOrThrow({
     where: {
@@ -136,8 +139,17 @@ const folderDeletePost = async (req, res) => {
   res.redirect(`/dashboard/${parentId}`);
 };
 
+// TODO: break up into smaller functions
 const fileUploadPost = async (req, res) => {
   const filePath = path.resolve(`uploads/${req.file.filename}`);
+  if (req.file.size > FILE_SIZE_LIMIT) {
+    console.log(
+      'File cannot be uploaded due to it being greater than the file size limit',
+    );
+    await fs.rm(filePath);
+    res.redirect('/dashboard');
+    return;
+  }
   // console.log({ filePath });
   const file = await fs.readFile(filePath);
   // console.log({ file });

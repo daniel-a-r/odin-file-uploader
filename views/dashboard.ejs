@@ -87,7 +87,7 @@
     
     <dialog class="file-upload">
       <h1>Upload File</h1>
-      <form action="/dashboard/<%= locals.folder.id %>/file-upload" method="post" enctype="multipart/form-data">
+      <form action="/dashboard/<%= locals.folder.id %>/file-upload" method="post" enctype="multipart/form-data" class="file-upload">
         <input type="file" name="uploadedFile" id="file" required>
         <button type="reset" class="file-upload-close">Cancel</button>
         <button type="submit" class="file-upload-submit">Upload File</button>

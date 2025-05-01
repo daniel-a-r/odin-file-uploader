@@ -1,3 +1,5 @@
+const FILE_SIZE_LIMIT = 50000000;
+
 const resourceMethod = (event, resourceType, method) => {
   const parentElement = event.target.parentElement;
   const id = parentElement.dataset.id;
@@ -88,6 +90,24 @@ fileUploadModalOpenButtons.forEach((fileUploadOpen) => {
   fileUploadOpen.addEventListener('click', () => {
     fileUploadModal.showModal();
   });
+});
+
+const validateFileSize = (fileInputElem) => {
+  if (fileInputElem.files.length > 0) {
+    const file = fileInputElem.files[0];
+    if (file.size > FILE_SIZE_LIMIT) {
+      fileInputElem.setCustomValidity('File cannot be greater than 50MB');
+    } else {
+      fileInputElem.setCustomValidity('');
+    }
+  }
+};
+
+const fileInput = document.querySelector('input#file');
+validateFileSize(fileInput);
+
+fileInput.addEventListener('change', (event) => {
+  validateFileSize(event.target);
 });
 
 const fileUploadClose = document.querySelector('button.file-upload-close');
