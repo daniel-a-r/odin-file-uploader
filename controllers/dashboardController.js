@@ -21,8 +21,8 @@ const dashboardGet = async (req, res) => {
   res.redirect(`/dashboard/${req.user.root.id}`);
 };
 
-// TODO: break up into smaller functions
-const dashboardCurrentFolderIdGet = async (req, res) => {
+// get current folder for dashboard
+const getCurrentFolder = async (req, res, next) => {
   const folder = await prisma.folder.findUniqueOrThrow({
     where: {
       id: req.params.currentFolderId,
@@ -42,10 +42,16 @@ const dashboardCurrentFolderIdGet = async (req, res) => {
     },
   });
 
+  res.locals.currentFolder = folder;
+  next();
+};
+
+const getParentFoldersNav = async (req, res) => {
+  const { currentFolder } = res.locals;
   const parentFolders = [];
 
-  if (req.user.root.id !== folder.id) {
-    let parentId = folder.parentId;
+  if (req.user.root.id !== currentFolder.id) {
+    let parentId = currentFolder.parentId;
     const folders = [];
     for (let i = 0; i < 3; i++) {
       const parentFolder = await prisma.folder.findUniqueOrThrow({
@@ -68,12 +74,14 @@ const dashboardCurrentFolderIdGet = async (req, res) => {
   res.render('dashboard', {
     title: 'Dashboard',
     script: 'dashboard.js',
-    folder: folder,
-    folders: folder.folders,
-    files: folder.files,
+    folder: currentFolder,
+    folders: currentFolder.folders,
+    files: currentFolder.files,
     parentFolders,
   });
 };
+
+const dashboardCurrentFolderIdGet = [getCurrentFolder, getParentFoldersNav];
 
 const folderCreatePost = async (req, res) => {
   await prisma.folder.update({
@@ -139,6 +147,7 @@ const folderDeletePost = async (req, res) => {
   res.redirect(`/dashboard/${parentId}`);
 };
 
+// upload file
 const validateFileSize = async (req, res, next) => {
   const filePath = path.resolve(`uploads/${req.file.filename}`);
   if (req.file.size > FILE_SIZE_LIMIT) {
