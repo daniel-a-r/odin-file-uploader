@@ -3,10 +3,24 @@
   box-sizing: border-box;
 }
 
+:root {
+  --base-font-size: 1.1rem;
+}
+
 body {
   min-height: 100dvh;
   margin: 0;
   padding: 2rem;
+  background-color: #212529;
+  color: white;
+}
+
+header {
+  margin-bottom: 1rem;
+}
+
+h1 {
+  text-align: center;
 }
 
 ul {
@@ -15,8 +29,67 @@ ul {
   padding: 0;
 }
 
-button, input {
+ul.nav {
+  
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+li, 
+label,
+button {
+  font-size: var(--base-font-size);
+}
+
+a:any-link {
+  color: #6ea8fe;
+}
+
+svg {
+  fill: white;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 0.25rem;
+}
+
+input {
   font-size: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.375rem 0.75rem;
+  border: thin solid lightgray;
+  border-radius: 0.3rem;
+}
+
+button {
+  margin-top: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border: none;
+  border-radius: 0.3rem;
+  background-color: #0d6efd;
+  color: white;
+}
+
+button.delete {
+  background-color: #dc3545;
+}
+
+button.details {
+  background-color: #0dcaf0;
+}
+
+button.close {
+  background-color: #6c757d;
+}
+
+button.secondary {
+  background-color: #6c757d;
 }
 
 div.dropdown {

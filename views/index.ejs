@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('./partials/head') %>
+  <%- include('partials/head') %>
   <body>
-    <%- include('./partials/nav') %>
-    <h1>Hello World</h1>
+    <header>
+      <h1>Cloud Storage!</h1>
+      <%- include('partials/nav') %>
+    </header>
     <% if (locals.currentUser) { %>
       <h2>Currently logged in as <%= locals.currentUser.username %></h2>
     <% } %>
+    <%- include('partials/folder-arrow-up-down') %>
   </body>
 </html>
