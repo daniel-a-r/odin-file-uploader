@@ -262,6 +262,11 @@ const fileDeletePost = async (req, res) => {
     .from('files')
     .remove([`${req.user.id}/${req.params.fileId}`]);
 
+  if (error) {
+    console.error(error);
+    throw new Error('Error removing file from storage');
+  }
+
   await prisma.file.delete({
     where: {
       id: req.params.fileId,
