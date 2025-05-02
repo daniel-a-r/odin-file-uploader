@@ -139,32 +139,43 @@ const folderDeletePost = async (req, res) => {
   res.redirect(`/dashboard/${parentId}`);
 };
 
-// TODO: break up into smaller functions
-const fileUploadPost = async (req, res) => {
+const validateFileSize = async (req, res, next) => {
   const filePath = path.resolve(`uploads/${req.file.filename}`);
   if (req.file.size > FILE_SIZE_LIMIT) {
-    console.log(
+    console.error(
       'File cannot be uploaded due to it being greater than the file size limit',
     );
     await fs.rm(filePath);
     res.redirect('/dashboard');
     return;
   }
-  // console.log({ filePath });
+  res.locals.filePath = filePath;
+  next();
+};
+
+const uploadToStorage = async (req, res, next) => {
+  const { filePath } = res.locals;
   const file = await fs.readFile(filePath);
-  // console.log({ file });
-  // const { data, error } = await supabase.storage.from('files').list();
-  // console.log({ data, error });
   const { data, error } = await supabase.storage
     .from('files')
     .upload(`${req.user.id}/${req.file.filename}`, file, {
       contentType: `${req.file.mimetype}`,
     });
-  // console.log({ data, error });
 
-  const urlData = await supabase.storage
+  if (data) {
+    res.locals.storagePath = data.path;
+    next();
+  } else if (error) {
+    console.error(error);
+    throw new Error('Storage upload error');
+  }
+};
+
+const insertToDatabase = async (req, res) => {
+  const { storagePath, filePath } = res.locals;
+  const { data } = supabase.storage
     .from('files')
-    .getPublicUrl(data.path, { download: req.file.originalname });
+    .getPublicUrl(storagePath, { download: req.file.originalname });
 
   await prisma.folder.update({
     where: {
@@ -176,7 +187,7 @@ const fileUploadPost = async (req, res) => {
         create: {
           id: req.file.filename,
           name: req.file.originalname,
-          path: urlData.data.publicUrl,
+          path: data.publicUrl,
           size: req.file.size,
           mimetype: req.file.mimetype,
           ownerId: req.user.id,
@@ -188,6 +199,8 @@ const fileUploadPost = async (req, res) => {
   await fs.rm(filePath);
   res.redirect(`/dashboard/${req.params.currentFolderId}`);
 };
+
+const fileUploadPost = [validateFileSize, uploadToStorage, insertToDatabase];
 
 const childFolderRenamePost = async (req, res) => {
   await prisma.folder.update({
