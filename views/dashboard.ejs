@@ -35,8 +35,11 @@
   
       <ul class="folder-list">
         <% locals.folders.forEach(folder => { %>
-          <li class="folder">
-            <a href="/dashboard/<%= folder.id %>"><%= folder.name %></a>
+          <li class="folder card">
+            <a href="/dashboard/<%= folder.id %>" class="folder">
+              <%- include('partials/folder') %>
+              <span><%= folder.name %></span>
+            </a>
             <div class="dropdown folder-dropdown">
               <button class="dropdown-toggle">
                 <%- include('partials/dots-vertical') %>
