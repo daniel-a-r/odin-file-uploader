@@ -38,7 +38,9 @@
           <li class="folder">
             <a href="/dashboard/<%= folder.id %>"><%= folder.name %></a>
             <div class="dropdown folder-dropdown">
-              <button class="dropdown-toggle secondary">actions</button>
+              <button class="dropdown-toggle secondary">
+                <%- include('partials/dots-vertical') %>
+              </button>
               <div 
                 class="folder-actions dropdown-actions" 
                 data-id="<%= folder.id %>" 

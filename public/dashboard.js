@@ -219,7 +219,7 @@ if (dropdownToggleButtons.length > 0) {
       const openDropdownActions = document.querySelector(
         'div.dropdown-actions.open',
       );
-      const dropdownActions = e.target.nextElementSibling;
+      const dropdownActions = e.currentTarget.nextElementSibling;
 
       // if dropdown is already open and not the toggle button currently clicked
       // close the dropdown
@@ -237,7 +237,8 @@ if (dropdownToggleButtons.length > 0) {
 
   // close dropdown when clicking on element that is not a dropdown toggle button
   window.addEventListener('click', (e) => {
-    if (!Array.from(dropdownToggleButtons).includes(e.target)) {
+    const parentElement = e.target.closest('button.dropdown-toggle');
+    if (!Array.from(dropdownToggleButtons).includes(parentElement)) {
       const openDropdownActions = document.querySelector(
         'div.dropdown-actions.open',
       );
