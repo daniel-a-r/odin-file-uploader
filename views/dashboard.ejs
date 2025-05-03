@@ -7,27 +7,34 @@
       <%- include('./partials/nav') %>
     </header>
     <main>
-      <button class="folder-create-open">New Folder</button>
-      <button class="file-upload-open">File Upload</button>
-  
+      <div class="resource-create-buttons">
+        <button class="folder-create-open">New Folder</button>
+        <button class="file-upload-open">File Upload</button>
+      </div>
+        
       <% if (locals.folder.role === 'ROOT') { %>
-        <div data-folder-role="<%= locals.folder.role %>">
+        <div data-folder-role="<%= locals.folder.role %>" class="folder-path">
+          <%- include('partials/folder-open') %>
           <span><%= locals.folder.name %></span>
         </div>
       <% } else { %>
-        <nav>
+        <nav class="folder-path">
+          <%- include('partials/folder-open') %>
           <% locals.parentFolders.forEach(parentFolder => { %>
             <span><a href="/dashboard/<%= parentFolder.id %>"><%= parentFolder.name %></a> / </span>
           <% }) %>
-          <div class="dropdown folder-dropdown">
-            <button class="folder-actions-toggle dropdown-toggle" data-folder-role="<%= locals.folder.role %>">
-              <%= locals.folder.name %>
-            </button>
-            <div class="folder-actions dropdown-actions folder-nav">
-              <button class="folder-create-open action">New Folder</button>
-              <button class="file-upload-open action">File Upload</button>
-              <button class="folder-rename-open secondary action">Rename</button>
-              <button class="folder-delete-open delete action">Delete</button>
+          <div class="current-folder">
+            <span><%= locals.folder.name %></span>
+            <div class="dropdown folder-dropdown">
+              <button class="folder-actions-toggle dropdown-toggle folder-nav" data-folder-role="<%= locals.folder.role %>">
+                <%- include('partials/dots-vertical') %>
+              </button>
+              <div class="folder-actions dropdown-actions folder-nav">
+                <button class="folder-create-open action">New Folder</button>
+                <button class="file-upload-open action">File Upload</button>
+                <button class="folder-rename-open secondary action">Rename</button>
+                <button class="folder-delete-open delete action">Delete</button>
+              </div>
             </div>
           </div>
         </nav>

@@ -25,6 +25,10 @@ span {
   font-size: var(--base-font-size);
 }
 
+h2 {
+  margin: 0;
+}
+
 a:any-link {
   color: #6ea8fe;
 }
@@ -105,6 +109,24 @@ div.dropdown-actions.child {
   right: 0;
 }
 
+div.folder-path,
+nav.folder-path,
+div.current-folder {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+nav.folder-path {
+  flex-wrap: wrap;
+}
+
+div.resources-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 form.sign-up,
 form.login {
   display: flex;
@@ -149,6 +171,12 @@ input {
 input::file-selector-button {
   margin: 0.5rem 0.25rem;
   margin-left: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 span.resource-name {
