@@ -29,15 +29,17 @@ a:any-link {
   color: #6ea8fe;
 }
 
-a.folder {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 a.folder:any-link {
   text-decoration: none;
+}
+
+a.resource-icon-name,
+div.resource-icon-name {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 button,
@@ -123,15 +125,18 @@ form.login {
 
 li.card {
   background-color: #272b30;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.375rem 0.75rem;
   border-radius: 0.375rem;
 }
 
 li.card:hover {
   background-color: #424649;
+}
+
+li.child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.375rem 0.75rem;
 }
 
 input {
@@ -146,24 +151,17 @@ input::file-selector-button {
   margin-left: 0;
 }
 
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-ul.nav {
-  
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
+span.resource-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 svg {
   fill: white;
 }
 
-svg.folder {
+svg.icon {
   height: 1.5rem;
   aspect-ratio: 1/1;
 }
@@ -174,14 +172,13 @@ ul {
   padding: 0;
 }
 
-ul.folder-list {
+ul.resource-list {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
 ul.nav {
-  
   display: flex;
   justify-content: center;
   gap: 2rem;

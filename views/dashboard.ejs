@@ -20,7 +20,7 @@
             <span><a href="/dashboard/<%= parentFolder.id %>"><%= parentFolder.name %></a> / </span>
           <% }) %>
           <div class="dropdown folder-dropdown">
-            <button class="folder-actions-toggle dropdown-toggle secondary" data-folder-role="<%= locals.folder.role %>">
+            <button class="folder-actions-toggle dropdown-toggle" data-folder-role="<%= locals.folder.role %>">
               <%= locals.folder.name %>
             </button>
             <div class="folder-actions dropdown-actions folder-nav">
@@ -33,52 +33,67 @@
         </nav>
       <% } %>
   
-      <ul class="folder-list">
-        <% locals.folders.forEach(folder => { %>
-          <li class="folder card">
-            <a href="/dashboard/<%= folder.id %>" class="folder">
-              <%- include('partials/folder') %>
-              <span><%= folder.name %></span>
-            </a>
-            <div class="dropdown folder-dropdown">
-              <button class="dropdown-toggle">
-                <%- include('partials/dots-vertical') %>
-              </button>
-              <div 
-                class="folder-actions dropdown-actions child" 
-                data-id="<%= folder.id %>" 
-                data-name="<%= folder.name %>"
-              >
-                <button class="folder-rename-open secondary action">Rename</button>
-                <button class="folder-delete-open delete action">Delete</button>
-              </div>
-            </div>
-          </li>
-        <% }) %>
-      </ul>
-  
-      <ul class="file-list">
-        <% locals.files.forEach(file => { %>
-          <li class="file">
-            <p class="file-name"><%= file.name %></p>
-            <div class="dropdown file-dropdown">
-              <button class="dropdown-toggle secondary">actions</button>
-              <div 
-                class="file-actions dropdown-actions child" 
-                data-name="<%= file.name %>" 
-                data-size="<%= file.size %>" 
-                data-uploaded-at="<%= file.uploadedAt %>"
-                data-id="<%= file.id %>"
-              >
-                <a class="file-download action" href="<%= file.path %>" download="<%= file.name %>">Download</a>
-                <button class="file-rename-open secondary action">Rename</button>
-                <button class="file-details-open details action">Details</button>
-                <button class="file-delete-open delete action">Delete</button>
-              </div>
-            </div>
-          </li>
-        <% }) %>
-      </ul>
+      <% if (locals.folders.length > 0) { %>
+        <div class="resources-wrapper">
+          <h2 class="resource-type">Folders</h2>
+          <ul class="folder-list resource-list">
+            <% locals.folders.forEach(folder => { %>
+              <li class="folder card child">
+                <a href="/dashboard/<%= folder.id %>" class="folder resource-icon-name">
+                  <%- include('partials/folder') %>
+                  <span class="resource-name"><%= folder.name %></span>
+                </a>
+                <div class="dropdown folder-dropdown">
+                  <button class="dropdown-toggle">
+                    <%- include('partials/dots-vertical') %>
+                  </button>
+                  <div 
+                    class="folder-actions dropdown-actions child" 
+                    data-id="<%= folder.id %>" 
+                    data-name="<%= folder.name %>"
+                  >
+                    <button class="folder-rename-open secondary action">Rename</button>
+                    <button class="folder-delete-open delete action">Delete</button>
+                  </div>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+      
+      <% if (locals.files.length > 0) { %>
+        <div class="resources-wrapper">
+          <h2 class="resource-type">Files</h2>
+          <ul class="file-list resource-list">
+            <% locals.files.forEach(file => { %>
+              <li class="file child">
+                <div class="file-wrapper resource-icon-name">
+                  <%- include('partials/file') %>
+                  <span class="file-name resource-name"><%= file.name %></span>
+                </div>
+                <div class="dropdown file-dropdown">
+                  <button class="dropdown-toggle">
+                    <%- include('partials/dots-vertical') %>
+                  </button>
+                  <div 
+                    class="file-actions dropdown-actions child" 
+                    data-name="<%= file.name %>" 
+                    data-size="<%= file.size %>" 
+                    data-uploaded-at="<%= file.uploadedAt %>"
+                    data-id="<%= file.id %>"
+                  >
+                    <a class="file-download action" href="<%= file.path %>" download="<%= file.name %>">Download</a>
+                    <button class="file-rename-open secondary action">Rename</button>
+                    <button class="file-details-open details action">Details</button>
+                    <button class="file-delete-open delete action">Delete</button>
+                  </div>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
     </main>
     
     <dialog class="folder-create">
