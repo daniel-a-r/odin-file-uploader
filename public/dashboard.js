@@ -206,7 +206,7 @@ if (fileList.length > 0) {
   });
 
   const fileDeleteClose = document.querySelector('button.file-delete-close');
-  fileDeleteClose.addEventListener('click', () => handleFileDeleteClose);
+  fileDeleteClose.addEventListener('click', handleFileDeleteClose);
 }
 
 const dropdownToggleButtons = document.querySelectorAll(
