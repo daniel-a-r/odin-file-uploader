@@ -111,62 +111,82 @@
     </main>
     
     <dialog class="folder-create">
-      <h1>New Folder</h1>
-      <form
-        action="/dashboard/<%= locals.folder.id %>/folder-create"
-        method="post"
-      >
-        <label for="folder-create-name">Name:</label>
-        <input type="text" name="newFolderName" id="folder-create-name" required />
-        <button type="reset" class="folder-create-close secondary">Cancel</button>
-        <button type="submit" class="folder-create-submit primary">Create Folder</button>
-      </form>
+      <div class="dialog-content">
+        <h1>New Folder</h1>
+        <form
+          action="/dashboard/<%= locals.folder.id %>/folder-create"
+          method="post"
+        >
+          <label for="folder-create-name">Name:</label>
+          <input type="text" name="newFolderName" id="folder-create-name" required />
+          <div class="form-buttons">
+            <button type="reset" class="folder-create-close secondary">Cancel</button>
+            <button type="submit" class="folder-create-submit primary">Create Folder</button>
+          </div>
+        </form>
+      </div>
     </dialog>
     
     <dialog class="file-upload">
-      <h1>Upload File</h1>
-      <form action="/dashboard/<%= locals.folder.id %>/file-upload" method="post" enctype="multipart/form-data" class="file-upload">
-        <input type="file" name="uploadedFile" id="file" required>
-        <button type="reset" class="file-upload-close secondary">Cancel</button>
-        <button type="submit" class="file-upload-submit primary">Upload File</button>
-      </form>
+      <div class="dialog-content">
+        <h1>Upload File</h1>
+        <form action="/dashboard/<%= locals.folder.id %>/file-upload" method="post" enctype="multipart/form-data" class="file-upload">
+          <input type="file" name="uploadedFile" id="file" required>
+          <div class="form-buttons">
+            <button type="reset" class="file-upload-close secondary">Cancel</button>
+            <button type="submit" class="file-upload-submit primary">Upload File</button>
+          </div>
+        </form>
+      </div>
     </dialog>
 
     <% if (locals.folder.role !== 'ROOT' || locals.folders.length > 0) { %>
       <dialog class="folder-rename">
-        <h1>Rename Folder</h1>
-        <form action="/dashboard/<%= locals.folder.id %>/folder-rename" method="post" class="folder-rename">
-          <label for="folder-rename">Name:</label>
-          <input type="text" name="folderRename" id="folder-rename" required />
-          <button type="reset" class="folder-rename-close secondary">Cancel</button>
-          <button type="submit" class="folder-rename-submit primary">Rename Folder</button>
-        </form>
+        <div class="dialog-content">
+          <h1>Rename Folder</h1>
+          <form action="/dashboard/<%= locals.folder.id %>/folder-rename" method="post" class="folder-rename">
+            <label for="folder-rename">Name:</label>
+            <input type="text" name="folderRename" id="folder-rename" required />
+            <div class="form-buttons">
+              <button type="reset" class="folder-rename-close secondary">Cancel</button>
+              <button type="submit" class="folder-rename-submit primary">Rename Folder</button>
+            </div>
+          </form>
+        </div>
       </dialog>
 
       <dialog class="folder-delete">
-        <h1>Delete Folder Confirmation</h1>
-        <form action="/dashboard/<%= locals.folder.id %>/folder-delete" method="post" class="folder-delete">
-          <h2>Are you sure you want to delete <span class="modal-info folder-name">FOLDER TITLE</span>?</h2>
-          <h2>Doing so will delete all contents inside the folder.</h2>
-          <button type="button" class="folder-delete-close secondary">Cancel</button>
-          <button type="submit" class="folder-delete-submit delete">Delete</button>
-        </form>
+        <div class="dialog-content">
+          <h1>Delete Folder Confirmation</h1>
+          <form action="/dashboard/<%= locals.folder.id %>/folder-delete" method="post" class="folder-delete">
+            <h2>Are you sure you want to delete <span class="modal-info folder-name">FOLDER TITLE</span>?</h2>
+            <h2>Doing so will delete all contents inside the folder.</h2>
+            <div class="form-buttons">
+              <button type="button" class="folder-delete-close secondary">Cancel</button>
+              <button type="submit" class="folder-delete-submit delete">Delete</button>
+            </div>
+          </form>
+        </div>
       </dialog>
     <% } %>
 
     <% if (locals.files.length > 0) { %>
       <dialog class="file-rename">
-        <h1>Rename File</h1>
-        <form action="/dashboard/<%= locals.folder.id %>/file-rename" method="post" class="file-rename">
-          <label for="file-rename">Name:</label>
-          <input type="text" name="fileRename" id="file-rename" required />
-          <button type="reset" class="file-rename-close secondary">Cancel</button>
-          <button type="submit" class="file-rename-submit primary">Rename Folder</button>
-        </form>
+        <div class="dialog-content">
+          <h1>Rename File</h1>
+          <form action="/dashboard/<%= locals.folder.id %>/file-rename" method="post" class="file-rename">
+            <label for="file-rename">Name:</label>
+            <input type="text" name="fileRename" id="file-rename" required />
+            <div class="form-buttons">
+              <button type="reset" class="file-rename-close secondary">Cancel</button>
+              <button type="submit" class="file-rename-submit primary">Rename Folder</button>
+            </div>
+          </form>
+        </div>
       </dialog>
 
       <dialog class="file-details">
-        <ul>
+        <ul class="dialog-content file-details">
           <li><p class="modal-info file-name"></p></li>
           <li><p>Size</p><p class="modal-info file-size"></p></li>
           <li><p>Uploaded</p><p class="modal-info file-uploaded-at"></p></li>
@@ -175,16 +195,17 @@
       </dialog>
 
       <dialog class="file-delete">
-        <h1>Delete File Confirmation</h1>
-        <form action="/dashboard/<%= locals.folder.id %>/file-delete" method="post" class="file-delete">
-          <h2>Are you sure you want to delete <span class="modal-info file-name">FOLDER TITLE</span>?</h2>
-          <button type="button" class="file-delete-close secondary">Cancel</button>
-          <button type="submit" class="file-delete-submit delete">Delete</button>
-        </form>
+        <div class="dialog-content">
+          <h1>Delete File Confirmation</h1>
+          <form action="/dashboard/<%= locals.folder.id %>/file-delete" method="post" class="file-delete">
+            <h2>Are you sure you want to delete <span class="modal-info file-name">FOLDER TITLE</span>?</h2>
+            <div class="form-buttons">
+              <button type="button" class="file-delete-close secondary">Cancel</button>
+              <button type="submit" class="file-delete-submit delete">Delete</button>
+            </div>
+          </form>
+        </div>
       </dialog>
-    <% } %>
-    
-    
-    
+    <% } %>    
   </body>
 </html>
