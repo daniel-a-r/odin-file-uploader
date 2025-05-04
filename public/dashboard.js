@@ -249,3 +249,18 @@ if (dropdownToggleButtons.length > 0) {
     }
   });
 }
+
+const folderNavDropdownToggle = document.querySelector(
+  'button.dropdown-toggle.folder-nav',
+);
+folderNavDropdownToggle.addEventListener('click', () => {
+  const folderNavDropdown = document.querySelector(
+    'div.dropdown-actions.folder-nav',
+  );
+  const coords = folderNavDropdown.getBoundingClientRect();
+  const clientWidth = document.documentElement.clientWidth;
+
+  if (coords.right > clientWidth) {
+    folderNavDropdown.style.right = '0';
+  }
+});

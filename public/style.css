@@ -101,9 +101,9 @@ div.dropdown-actions {
   z-index: 1;
 }
 
-div.dropdown-actions.folder-nav {
+/* div.dropdown-actions.folder-nav {
   left: 0;
-}
+} */
 
 div.dropdown-actions.child {
   right: 0;
