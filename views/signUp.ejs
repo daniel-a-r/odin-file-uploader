@@ -4,7 +4,7 @@
   <body>
     <header>
       <h1><%= locals.title %></h1>
-      <%- include('./partials/nav') %>
+      <%- include('./partials/nav', { home: true, login: true }) %>
     </header>
     <main>
       <form action="/sign-up" method="post" class="sign-up">
@@ -19,7 +19,7 @@
           id="confirmPassword"
           required
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit" class="primary">Sign Up</button>
       </form>
       <% if (locals.errors) { %>
         <ul>

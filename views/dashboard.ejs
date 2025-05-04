@@ -8,8 +8,8 @@
     </header>
     <main>
       <div class="resource-create-buttons">
-        <button class="folder-create-open">New Folder</button>
-        <button class="file-upload-open">File Upload</button>
+        <button class="folder-create-open primary">New Folder</button>
+        <button class="file-upload-open primary">File Upload</button>
       </div>
         
       <% if (locals.folder.role === 'ROOT') { %>
@@ -30,10 +30,12 @@
                 <%- include('partials/dots-vertical') %>
               </button>
               <div class="folder-actions dropdown-actions folder-nav">
-                <button class="folder-create-open action">New Folder</button>
-                <button class="file-upload-open action">File Upload</button>
-                <button class="folder-rename-open secondary action">Rename</button>
-                <button class="folder-delete-open delete action">Delete</button>
+                <div class="dropdown-buttons">
+                  <button class="folder-create-open secondary action">New Folder</button>
+                  <button class="file-upload-open secondary action">File Upload</button>
+                  <button class="folder-rename-open secondary action">Rename</button>
+                  <button class="folder-delete-open delete action">Delete</button>
+                </div>
               </div>
             </div>
           </div>
@@ -85,15 +87,20 @@
                   </button>
                   <div 
                     class="file-actions dropdown-actions child" 
-                    data-name="<%= file.name %>" 
-                    data-size="<%= file.size %>" 
-                    data-uploaded-at="<%= file.uploadedAt %>"
-                    data-id="<%= file.id %>"
+                    
                   >
-                    <a class="file-download action" href="<%= file.path %>" download="<%= file.name %>">Download</a>
-                    <button class="file-rename-open secondary action">Rename</button>
-                    <button class="file-details-open details action">Details</button>
-                    <button class="file-delete-open delete action">Delete</button>
+                    <div 
+                      class="dropdown-buttons" 
+                      data-name="<%= file.name %>" 
+                      data-size="<%= file.size %>" 
+                      data-uploaded-at="<%= file.uploadedAt %>"
+                      data-id="<%= file.id %>"
+                    >
+                      <a class="file-download action" href="<%= file.path %>" download="<%= file.name %>">Download</a>
+                      <button class="file-rename-open secondary action">Rename</button>
+                      <button class="file-details-open secondary action">Details</button>
+                      <button class="file-delete-open delete action">Delete</button>
+                    </div>
                   </div>
                 </div>
               </li>
@@ -112,7 +119,7 @@
         <label for="folder-create-name">Name:</label>
         <input type="text" name="newFolderName" id="folder-create-name" required />
         <button type="reset" class="folder-create-close secondary">Cancel</button>
-        <button type="submit" class="folder-create-submit">Create Folder</button>
+        <button type="submit" class="folder-create-submit primary">Create Folder</button>
       </form>
     </dialog>
     
@@ -121,7 +128,7 @@
       <form action="/dashboard/<%= locals.folder.id %>/file-upload" method="post" enctype="multipart/form-data" class="file-upload">
         <input type="file" name="uploadedFile" id="file" required>
         <button type="reset" class="file-upload-close secondary">Cancel</button>
-        <button type="submit" class="file-upload-submit">Upload File</button>
+        <button type="submit" class="file-upload-submit primary">Upload File</button>
       </form>
     </dialog>
 
@@ -132,7 +139,7 @@
           <label for="folder-rename">Name:</label>
           <input type="text" name="folderRename" id="folder-rename" required />
           <button type="reset" class="folder-rename-close secondary">Cancel</button>
-          <button type="submit" class="folder-rename-submit">Rename Folder</button>
+          <button type="submit" class="folder-rename-submit primary">Rename Folder</button>
         </form>
       </dialog>
 
@@ -154,7 +161,7 @@
           <label for="file-rename">Name:</label>
           <input type="text" name="fileRename" id="file-rename" required />
           <button type="reset" class="file-rename-close secondary">Cancel</button>
-          <button type="submit" class="file-rename-submit">Rename Folder</button>
+          <button type="submit" class="file-rename-submit primary">Rename Folder</button>
         </form>
       </dialog>
 

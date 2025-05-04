@@ -1,12 +1,20 @@
 <nav>
   <ul class="nav">
     <% if (locals.currentUser) { %>
-      <li><a href="/dashboard">Dashboard</a></li>
+      <% if (locals.dashboard) { %>
+        <li><a href="/dashboard">Dashboard</a></li>
+      <% } %>
       <li><a href="/logout">Logout</a></li>
     <% } else { %>
-      <li><a href="/">Home</a></li>
-      <li><a href="/sign-up">Sign Up</a></li>
-      <li><a href="/login">Login</a></li>
+      <% if (locals.home) { %>
+        <li><a href="/">Home</a></li>
+      <% } %>
+      <% if (locals.signUp) { %>
+        <li><a href="/sign-up">Sign Up</a></li>
+      <% } %>
+      <% if (locals.login) { %>
+        <li><a href="/login">Login</a></li>
+      <% } %>
     <% } %>
   </ul>
 </nav>
