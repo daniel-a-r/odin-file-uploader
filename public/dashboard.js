@@ -3,12 +3,12 @@ const FILE_SIZE_LIMIT = 50000000;
 const resourceMethod = (event, resourceType, method) => {
   const parentElement = event.target.parentElement;
   const id = parentElement.dataset.id;
-  const resourceDeleteForm = document.querySelector(
+  const resourceMethodForm = document.querySelector(
     `form.${resourceType}-${method}`,
   );
 
   if (id) {
-    resourceDeleteForm.action += `/${id}`;
+    resourceMethodForm.action += `/${id}`;
   }
 
   if (method === 'delete') {
