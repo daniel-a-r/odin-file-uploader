@@ -22,7 +22,8 @@ body {
 li, 
 label,
 button,
-span {
+span,
+input::file-selector-button {
   font-size: var(--base-font-size);
 }
 
