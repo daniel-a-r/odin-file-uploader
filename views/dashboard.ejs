@@ -133,7 +133,12 @@
     <dialog class="file-upload">
       <div class="dialog-content">
         <h1>Upload File</h1>
-        <form action="/dashboard/<%= locals.folder.id %>/file-upload" method="post" enctype="multipart/form-data" class="file-upload">
+        <form 
+          action="/dashboard/<%= locals.folder.id %>/file-upload" 
+          method="post" 
+          enctype="multipart/form-data" 
+          class="file-upload"
+        >
           <input type="file" name="uploadedFile" id="file" required>
           <div class="form-buttons">
             <button type="reset" class="file-upload-close secondary">Cancel</button>
@@ -147,7 +152,11 @@
       <dialog class="folder-rename">
         <div class="dialog-content">
           <h1>Rename Folder</h1>
-          <form action="/dashboard/<%= locals.folder.id %>/folder-rename" method="post" class="folder-rename">
+          <form 
+            action="/dashboard/<%= locals.folder.id %>/folder-rename" 
+            method="post" 
+            class="folder-rename"
+          >
             <label for="folder-rename">Name:</label>
             <input type="text" name="folderRename" id="folder-rename" required />
             <div class="form-buttons">
@@ -161,7 +170,11 @@
       <dialog class="folder-delete">
         <div class="dialog-content">
           <h1>Delete Folder Confirmation</h1>
-          <form action="/dashboard/<%= locals.folder.id %>/folder-delete" method="post" class="folder-delete">
+          <form 
+            action="/dashboard/<%= locals.folder.id %>/folder-delete" 
+            method="post" 
+            class="folder-delete"
+          >
             <p>Are you sure you want to delete "<span class="modal-info folder-name">FOLDER TITLE</span>"?</p>
             <p>Doing so will delete all contents inside the folder.</p>
             <div class="form-buttons">
@@ -177,7 +190,11 @@
       <dialog class="file-rename">
         <div class="dialog-content">
           <h1>Rename File</h1>
-          <form action="/dashboard/<%= locals.folder.id %>/file-rename" method="post" class="file-rename">
+          <form 
+            action="/dashboard/<%= locals.folder.id %>/file-rename" 
+            method="post" 
+            class="file-rename"
+          >
             <label for="file-rename">Name:</label>
             <input type="text" name="fileRename" id="file-rename" required />
             <div class="form-buttons">
@@ -200,7 +217,11 @@
       <dialog class="file-delete">
         <div class="dialog-content">
           <h1>Delete File Confirmation</h1>
-          <form action="/dashboard/<%= locals.folder.id %>/file-delete" method="post" class="file-delete">
+          <form 
+            action="/dashboard/<%= locals.folder.id %>/file-delete" 
+            method="post" 
+            class="file-delete"
+          >
             <p>Are you sure you want to delete "<span class="modal-info file-name">FOLDER TITLE</span>"?</p>
             <div class="form-buttons">
               <button type="button" class="file-delete-close secondary">Cancel</button>
