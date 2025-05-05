@@ -16,10 +16,14 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx dotenvx run -f .env.prod --verbose -- node app.js",
+    "dev": "npx dotenvx run -f .env.dev --verbose -- nodemon app.js", 
     "format": "npx prettier . --write",
     "migrate": "npx dotenvx run -f .env.dev -- npx prisma migrate dev --name",
-    "encrypt": "npx dotenvx encrypt -f .env.dev",
-    "decrypt": "npx dotenvx decrypt -f .env.dev",
+    "encrypt-dev": "npx dotenvx encrypt -f .env.dev",
+    "decrypt-dev": "npx dotenvx decrypt -f .env.dev",
+    "encrypt-prod": "npx dotenvx encrypt -f .env.prod",
+    "decrypt-prod": "npx dotenvx decrypt -f .env.prod",
     "sync-db": "npx dotenvx run -f .env.dev -- npx prisma migrate dev"
   },
   "dependencies": {
