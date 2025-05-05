@@ -4,14 +4,17 @@ import session from 'express-session';
 import { PrismaClient } from '@prisma/client';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import passport from './passport.config.js';
+import helmet from 'helmet';
 
 const app = express();
+app.disable('x-powered-by');
 
 app.set('views', path.resolve('./views'));
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.resolve('./public')));
 app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
 
 app.use(
   session({
