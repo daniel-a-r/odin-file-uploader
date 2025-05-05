@@ -1,4 +1,5 @@
 import path from 'node:path';
+import crypto from 'node:crypto';
 import express from 'express';
 import session from 'express-session';
 import { PrismaClient } from '@prisma/client';
@@ -14,11 +15,19 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(path.resolve('./public')));
 app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+  res.locals.cspNonce = crypto.randomBytes(32).toString('hex');
+  next();
+});
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        'script-src-elem': ["'self'", 'odin-file-uploader-etnq.onrender.com'],
+        scriptSrcElem: [
+          "'self'",
+          (req, res) => `'nonce-${res.locals.cspNonce}'`,
+        ],
       },
     },
   }),
