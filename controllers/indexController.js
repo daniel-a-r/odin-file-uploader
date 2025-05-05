@@ -4,10 +4,20 @@ import prisma from '../config/prismaClient.js';
 import { authenticate } from '../config/passport.config.js';
 
 const indexGet = (req, res) => {
+  if (req.user) {
+    res.redirect('/dashboard');
+    return;
+  }
+
   res.render('index', { title: 'Home' });
 };
 
 const signUpGet = (req, res) => {
+  if (req.user) {
+    res.redirect('/dashboard');
+    return;
+  }
+
   res.render('signUp', { title: 'Sign Up' });
 };
 
@@ -82,6 +92,11 @@ const signUpPost = [
 ];
 
 const loginGet = (req, res) => {
+  if (req.user) {
+    res.redirect('/dashboard');
+    return;
+  }
+
   res.render('login', { title: 'Login', errors: req.session.messages });
 };
 
