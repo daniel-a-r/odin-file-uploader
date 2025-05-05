@@ -22,7 +22,6 @@ const resourceMethod = (event, resourceType, method) => {
     renameInput.value = name;
     renameInput.focus();
     renameInput.select();
-    console.log(renameInput);
   }
 
   const modal = document.querySelector(`dialog.${resourceType}-${method}`);
