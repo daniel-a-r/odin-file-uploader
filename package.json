@@ -24,7 +24,8 @@
     "decrypt-dev": "npx dotenvx decrypt -f .env.dev",
     "encrypt-prod": "npx dotenvx encrypt -f .env.prod",
     "decrypt-prod": "npx dotenvx decrypt -f .env.prod",
-    "sync-db": "npx dotenvx run -f .env.dev -- npx prisma migrate dev"
+    "sync-db": "npx dotenvx run -f .env.dev -- npx prisma migrate dev",
+    "sync-db-prod": "npx dotenvx run -f .env.prod -- npx prisma migrate deploy"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.41.0",
