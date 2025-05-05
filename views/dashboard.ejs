@@ -30,7 +30,7 @@
                 <%- include('partials/dots-vertical') %>
               </button>
               <div class="folder-actions dropdown-actions folder-nav">
-                <div class="dropdown-buttons">
+                <div class="dropdown-buttons" data-name="<%= locals.folder.name %>">
                   <button class="folder-create-open secondary action">New Folder</button>
                   <button class="file-upload-open secondary action">File Upload</button>
                   <button class="folder-rename-open secondary action">Rename</button>
@@ -57,11 +57,12 @@
                     <%- include('partials/dots-vertical') %>
                   </button>
                   <div 
-                    class="folder-actions dropdown-actions child" 
-                    data-id="<%= folder.id %>" 
-                    data-name="<%= folder.name %>"
-                  >
-                    <div class="dropdown-buttons">
+                    class="folder-actions dropdown-actions child">
+                    <div 
+                      class="dropdown-buttons"
+                      data-id="<%= folder.id %>" 
+                      data-name="<%= folder.name %>"
+                    >
                       <button class="folder-rename-open secondary action">Rename</button>
                       <button class="folder-delete-open delete action">Delete</button>
                     </div>

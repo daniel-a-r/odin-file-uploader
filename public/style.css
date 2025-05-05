@@ -165,6 +165,12 @@ nav.folder-path {
   flex-wrap: wrap;
 }
 
+div.resource-create-buttons {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 div.resources-wrapper {
   display: flex;
   flex-direction: column;
@@ -237,11 +243,15 @@ main {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  align-items: center;
+}
+
+main > * {
+  width: 100%;
 }
 
 main > svg.folder-arrow-up-down {
   max-width: 48rem;
-  align-self: center;
 }
 
 span.resource-name {
@@ -279,4 +289,32 @@ ul.nav {
 
 ul.nav li {
   width: max-content;
+}
+
+@media screen and (width >= 40rem) {
+  form.sign-up,
+  form.login {
+    max-width: 40rem;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    row-gap: 1rem;
+    column-gap: 0.5rem;
+    align-items: center;
+    
+
+    label,
+    input,
+    button {
+      margin: 0;
+    }
+
+    label {
+      justify-self: end;
+    }
+
+    button {
+      width: max-content;
+      grid-column: 2;
+    }
+  }
 }
