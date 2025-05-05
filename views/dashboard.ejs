@@ -162,8 +162,8 @@
         <div class="dialog-content">
           <h1>Delete Folder Confirmation</h1>
           <form action="/dashboard/<%= locals.folder.id %>/folder-delete" method="post" class="folder-delete">
-            <h2>Are you sure you want to delete <span class="modal-info folder-name">FOLDER TITLE</span>?</h2>
-            <h2>Doing so will delete all contents inside the folder.</h2>
+            <p>Are you sure you want to delete "<span class="modal-info folder-name">FOLDER TITLE</span>"?</p>
+            <p>Doing so will delete all contents inside the folder.</p>
             <div class="form-buttons">
               <button type="button" class="folder-delete-close secondary">Cancel</button>
               <button type="submit" class="folder-delete-submit delete">Delete</button>
@@ -201,7 +201,7 @@
         <div class="dialog-content">
           <h1>Delete File Confirmation</h1>
           <form action="/dashboard/<%= locals.folder.id %>/file-delete" method="post" class="file-delete">
-            <h2>Are you sure you want to delete <span class="modal-info file-name">FOLDER TITLE</span>?</h2>
+            <p>Are you sure you want to delete "<span class="modal-info file-name">FOLDER TITLE</span>"?</p>
             <div class="form-buttons">
               <button type="button" class="file-delete-close secondary">Cancel</button>
               <button type="submit" class="file-delete-submit delete">Delete</button>

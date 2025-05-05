@@ -16,6 +16,13 @@ const resourceMethod = (event, resourceType, method) => {
       `span.modal-info.${resourceType}-name`,
     );
     resourceTitleSpan.textContent = parentElement.dataset.name;
+  } else if (method === 'rename') {
+    const name = parentElement.dataset.name;
+    const renameInput = document.querySelector(`input#${resourceType}-rename`);
+    renameInput.value = name;
+    renameInput.focus();
+    renameInput.select();
+    console.log(renameInput);
   }
 
   const modal = document.querySelector(`dialog.${resourceType}-${method}`);
