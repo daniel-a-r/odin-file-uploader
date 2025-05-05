@@ -1,4 +1,3 @@
-import { config } from '@dotenvx/dotenvx';
 import path from 'node:path';
 import express from 'express';
 import session from 'express-session';
@@ -6,14 +5,12 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import passport from './passport.config.js';
 
-config({ path: ['.env.dev'] });
-
 const app = express();
 
 app.set('views', path.resolve('./views'));
 app.set('view engine', 'ejs');
 
-app.use(express.static('public'));
+app.use(express.static(path.resolve('./public')));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
